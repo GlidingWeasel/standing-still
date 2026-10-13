@@ -1,0 +1,193 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Small multiples of card fraud victimisation by age group, Australia, every survey from 2020-2021 to 2024-2025. Card fraud was higher in 2024-2025 for every age group, clearly so for everyone aged 25 and over, and the over-65s nearly doubled, from 5.3 to 10.0 percent.",
+  "usermeta": {
+    "chart": "C11",
+    "idiom": "Small multiples of line charts with context lines",
+    "section": 4,
+    "source": "ABS Personal Fraud 2020-21, 2021-22, 2022-23, 2023-24 and 2024-25, card fraud by age, Victimisation rate (Table 5a, or 6a in 2023-24) and its RSE ('b' table)"
+  },
+  "data": {
+    "url": "data/chartready/abs_card_fraud_by_age_years.csv",
+    "format": {"parse": {"rate_pct": "number", "year_end": "number"}}
+  },
+  "transform": [
+    {
+      "calculate": "datum.age_band === '65+' ? 'Aged 65 and over' : 'Aged ' + replace(datum.age_band, '-', ' to ')",
+      "as": "panel"
+    },
+    {
+      "calculate": "datum.age_band === '65+' ? 'Aged 65 and over' : 'This panel\\'s age group'",
+      "as": "role"
+    }
+  ],
+  "facet": {
+    "field": "panel",
+    "type": "nominal",
+    "title": null,
+    "sort": [
+      "Aged 15 to 24",
+      "Aged 25 to 34",
+      "Aged 35 to 44",
+      "Aged 45 to 54",
+      "Aged 55 to 64",
+      "Aged 65 and over"
+    ],
+    "header": {
+      "labelFontSize": 13,
+      "labelFontWeight": 600,
+      "labelPadding": 8,
+      "labelAnchor": "start"
+    }
+  },
+  "columns": 3,
+  "spacing": {"row": 34, "column": 34},
+  "bounds": "flush",
+  "spec": {
+    "width": 283,
+    "height": 160,
+    "layer": [
+      {
+        "data": {
+          "url": "data/chartready/abs_card_fraud_by_age_years.csv",
+          "format": {"parse": {"rate_pct": "number", "year_end": "number"}}
+        },
+        "transform": [{"calculate": "'Other age groups'", "as": "role"}],
+        "mark": {"type": "line", "strokeWidth": 1.25, "opacity": 0.55},
+        "encoding": {
+          "x": {
+            "field": "year_end",
+            "type": "ordinal",
+            "title": "Year to June",
+            "axis": {"labelAngle": 0, "domain": false, "ticks": false}
+          },
+          "y": {
+            "field": "rate_pct",
+            "type": "quantitative",
+            "title": "People with card fraud (%)",
+            "scale": {"domain": [0, 17]},
+            "axis": {
+              "values": [0, 5, 10, 15],
+              "domain": false,
+              "ticks": false,
+              "labelOverlap": false,
+              "grid": true
+            }
+          },
+          "detail": {"field": "age_band", "type": "nominal"},
+          "color": {
+            "field": "role",
+            "type": "nominal",
+            "title": "In each panel",
+            "scale": {
+              "domain": [
+                "This panel's age group",
+                "Aged 65 and over",
+                "Other age groups"
+              ],
+              "range": ["#7A756D", "#C2410C", "#B9B4AD"]
+            },
+            "legend": {
+              "orient": "top",
+              "direction": "horizontal",
+              "symbolType": "stroke",
+              "symbolStrokeWidth": 3,
+              "labelFontSize": 12,
+              "titleFontSize": 12,
+              "symbolOpacity": 1
+            }
+          }
+        }
+      },
+      {
+        "mark": {"type": "line", "strokeWidth": 3},
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"field": "rate_pct", "type": "quantitative"},
+          "color": {"field": "role", "type": "nominal"}
+        }
+      },
+      {
+        "mark": {"type": "circle", "size": 55, "opacity": 1},
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"field": "rate_pct", "type": "quantitative"},
+          "color": {"field": "role", "type": "nominal"},
+          "tooltip": [
+            {"field": "age_band", "type": "nominal", "title": "Age"},
+            {"field": "year", "type": "nominal", "title": "Financial year"},
+            {
+              "field": "rate_pct",
+              "type": "quantitative",
+              "title": "People with card fraud (%)",
+              "format": ".1f"
+            }
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "dy": -12,
+          "fontSize": 12,
+          "fontWeight": 600,
+          "color": "#F7F5F2",
+          "stroke": "#F7F5F2",
+          "strokeWidth": 4,
+          "strokeJoin": "round"
+        },
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"field": "rate_pct", "type": "quantitative"},
+          "text": {"field": "rate_pct", "type": "quantitative", "format": ".1f"}
+        }
+      },
+      {
+        "transform": [{"filter": "datum.age_band !== '65+'"}],
+        "mark": {"type": "text", "dy": -12, "fontSize": 12, "color": "#14161A"},
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"field": "rate_pct", "type": "quantitative"},
+          "text": {"field": "rate_pct", "type": "quantitative", "format": ".1f"}
+        }
+      },
+      {
+        "transform": [{"filter": "datum.age_band === '65+'"}],
+        "mark": {
+          "type": "text",
+          "dy": -12,
+          "fontSize": 12,
+          "fontWeight": 600,
+          "color": "#C2410C"
+        },
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"field": "rate_pct", "type": "quantitative"},
+          "text": {"field": "rate_pct", "type": "quantitative", "format": ".1f"}
+        }
+      },
+      {
+        "name": "callout",
+        "transform": [
+          {"filter": "datum.age_band === '65+' && datum.year_end === 2021"}
+        ],
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "top",
+          "dx": -6,
+          "fontSize": 12,
+          "fontWeight": 600,
+          "lineBreak": "|",
+          "lineHeight": 15,
+          "color": "#C2410C"
+        },
+        "encoding": {
+          "x": {"field": "year_end", "type": "ordinal"},
+          "y": {"datum": 16.6},
+          "text": {"value": "Nearly doubled|in four years"}
+        }
+      }
+    ]
+  }
+}

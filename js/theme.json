@@ -1,0 +1,33 @@
+{
+  "background": "#F7F5F2",
+  "font": "IBM Plex Mono, ui-monospace, monospace",
+  "view": {"stroke": null},
+  "text": {"fontSize": 11, "color": "#14161A"},
+  "axis": {
+    "labelFontSize": 11,
+    "labelColor": "#14161A",
+    "titleFontSize": 11,
+    "titleFontWeight": 600,
+    "titleColor": "#14161A",
+    "domainColor": "#B9B4AD",
+    "tickColor": "#B9B4AD",
+    "gridColor": "#B9B4AD",
+    "gridOpacity": 0.4
+  },
+  "legend": {
+    "symbolSize": 196,
+    "labelFontSize": 11,
+    "labelColor": "#14161A",
+    "titleFontSize": 11,
+    "titleFontWeight": 600,
+    "titleColor": "#14161A"
+  },
+  "header": {
+    "labelFontSize": 12,
+    "labelColor": "#14161A",
+    "titleFontSize": 12,
+    "titleFontWeight": 600
+  },
+  "title": {"fontSize": 13, "fontWeight": 600, "color": "#14161A", "anchor": "start"},
+  "range": {"heatmap": {"scheme": "oranges"}}
+}

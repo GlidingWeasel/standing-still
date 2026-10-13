@@ -1,0 +1,161 @@
+behaviour,short_label,behaviour_type,age_band,year,pct,significant
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,18-34,2024,23.7,1
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,18-34,2025,19.3,1
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,35-64,2024,40.1,1
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,35-64,2025,37.4,1
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,65+,2024,58.1,0
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,65+,2025,56.5,0
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,All ages,2024,39.3,1
+Installed or used antivirus software or firewalls on their devices,Antivirus or firewall,Security,All ages,2025,36.2,1
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,18-34,2024,50.0,0
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,18-34,2025,47.8,0
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,35-64,2024,68.7,1
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,35-64,2025,66.5,1
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,65+,2024,86.1,0
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,65+,2025,84.6,0
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,All ages,2024,67.1,1
+Avoided clicking on links or attachments when they were not certain who the sender of an SMS/text or email was,Avoided unknown links,Security,All ages,2025,64.8,1
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,18-34,2024,24.2,1
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,18-34,2025,20.8,1
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,35-64,2024,26.8,0
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,35-64,2025,26.3,0
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,65+,2024,25.6,0
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,65+,2025,25.8,0
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,All ages,2024,25.8,1
+"Regularly updated their password on secure accounts, including email, banking or online stores and social media",Changed passwords regularly,Security,All ages,2025,24.5,1
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,18-34,2024,22.2,1
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,18-34,2025,19.9,1
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,35-64,2024,32.2,0
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,35-64,2025,30.6,0
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,65+,2024,40.8,1
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,65+,2025,43.9,1
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,All ages,2024,31.1,0
+Independently contacted a company or government department when they were unsure about an SMS/text or email they had received from them,Checked a message with the sender,Security,All ages,2025,30.4,0
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,18-34,2024,39.2,0
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,18-34,2025,37.9,0
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,35-64,2024,43.2,1
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,35-64,2025,40.8,1
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,65+,2024,26.8,0
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,65+,2025,26.5,0
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,All ages,2024,38.5,1
+Checked privacy settings on social media accounts,Checked social media privacy,Privacy,All ages,2025,36.6,1
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,18-34,2024,29.1,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,18-34,2025,29.2,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,35-64,2024,39.0,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,35-64,2025,38.1,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,65+,2024,42.9,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,65+,2025,40.2,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,All ages,2024,36.9,0
+"Cleared their browsing history, data and cookies frequently",Cleared history and cookies,Privacy,All ages,2025,35.9,0
+Purchased or continued to have cyber insurance,Cyber insurance,Security,18-34,2024,5.7,0
+Purchased or continued to have cyber insurance,Cyber insurance,Security,18-34,2025,5.0,0
+Purchased or continued to have cyber insurance,Cyber insurance,Security,35-64,2024,4.5,1
+Purchased or continued to have cyber insurance,Cyber insurance,Security,35-64,2025,2.9,1
+Purchased or continued to have cyber insurance,Cyber insurance,Security,65+,2024,3.3,0
+Purchased or continued to have cyber insurance,Cyber insurance,Security,65+,2025,4.0,0
+Purchased or continued to have cyber insurance,Cyber insurance,Security,All ages,2024,4.6,1
+Purchased or continued to have cyber insurance,Cyber insurance,Security,All ages,2025,3.7,1
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,18-34,2024,36.8,0
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,18-34,2025,35.7,0
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,35-64,2024,53.0,1
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,35-64,2025,48.5,1
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,65+,2024,65.2,0
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,65+,2025,62.5,0
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,All ages,2024,50.9,1
+"Used a different password for secure online accounts, especially for banking or financial transactions",Different password for banking,Security,All ages,2025,47.7,1
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,18-34,2024,20.9,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,18-34,2025,20.1,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,35-64,2024,22.2,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,35-64,2025,21.9,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,65+,2024,17.8,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,65+,2025,16.6,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,All ages,2024,20.9,0
+Used apps and platforms because they protect messages and content with end-to-end encryption,Encrypted messaging apps,Privacy,All ages,2025,20.1,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,18-34,2024,46.6,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,18-34,2025,45.5,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,35-64,2024,49.4,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,35-64,2025,49.2,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,65+,2024,42.3,1
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,65+,2025,46.4,1
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,All ages,2024,47.0,0
+"Used voice, fingerprint, facial or iris recognition technology to access their devices, such as their mobile phone",Face or fingerprint unlock,Security,All ages,2025,47.5,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,18-34,2024,24.4,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,18-34,2025,22.7,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,35-64,2024,14.1,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,35-64,2025,13.9,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,65+,2024,8.1,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,65+,2025,8.0,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,All ages,2024,15.9,0
+Generally browsed in incognito mode,Incognito browsing,Privacy,All ages,2025,15.2,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,18-34,2024,48.1,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,18-34,2025,47.9,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,35-64,2024,62.3,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,35-64,2025,62.9,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,65+,2024,61.5,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,65+,2025,64.1,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,All ages,2024,58.0,0
+Used multifactor or two-factor authentication for personal accounts,Multi-factor authentication,Security,All ages,2025,58.5,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,18-34,2024,13.1,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,18-34,2025,12.8,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,35-64,2024,17.1,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,35-64,2025,16.9,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,65+,2024,6.5,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,65+,2025,7.7,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,All ages,2024,13.5,0
+Participated in training to stay safe online or protect their online environment and information,Online safety training,Security,All ages,2025,13.6,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,18-34,2024,14.6,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,18-34,2025,14.7,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,35-64,2024,22.2,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,35-64,2025,21.3,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,65+,2024,29.0,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,65+,2025,26.7,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,All ages,2024,20.0,0
+"Set, or already had installed, parental controls on devices and browsers to restrict access to certain content (parents only)",Parental controls (parents only),Security,All ages,2025,19.3,0
+Used a secure password manager,Password manager,Security,18-34,2024,22.9,1
+Used a secure password manager,Password manager,Security,18-34,2025,25.4,1
+Used a secure password manager,Password manager,Security,35-64,2024,27.0,1
+Used a secure password manager,Password manager,Security,35-64,2025,29.5,1
+Used a secure password manager,Password manager,Security,65+,2024,23.0,1
+Used a secure password manager,Password manager,Security,65+,2025,25.8,1
+Used a secure password manager,Password manager,Security,All ages,2024,25.0,1
+Used a secure password manager,Password manager,Security,All ages,2025,27.4,1
+Used password protection on their router,Password on home router,Security,18-34,2024,20.2,0
+Used password protection on their router,Password on home router,Security,18-34,2025,18.7,0
+Used password protection on their router,Password on home router,Security,35-64,2024,26.4,1
+Used password protection on their router,Password on home router,Security,35-64,2025,24.6,1
+Used password protection on their router,Password on home router,Security,65+,2024,26.0,0
+Used password protection on their router,Password on home router,Security,65+,2025,25.1,0
+Used password protection on their router,Password on home router,Security,All ages,2024,24.5,1
+Used password protection on their router,Password on home router,Security,All ages,2025,22.9,1
+Installed or used spam-filtering software,Spam filter,Security,18-34,2024,13.6,1
+Installed or used spam-filtering software,Spam filter,Security,18-34,2025,10.4,1
+Installed or used spam-filtering software,Spam filter,Security,35-64,2024,21.4,1
+Installed or used spam-filtering software,Spam filter,Security,35-64,2025,18.4,1
+Installed or used spam-filtering software,Spam filter,Security,65+,2024,27.6,0
+Installed or used spam-filtering software,Spam filter,Security,65+,2025,26.4,0
+Installed or used spam-filtering software,Spam filter,Security,All ages,2024,20.5,1
+Installed or used spam-filtering software,Spam filter,Security,All ages,2025,17.8,1
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,18-34,2024,34.6,1
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,18-34,2025,29.2,1
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,35-64,2024,35.7,0
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,35-64,2025,34.7,0
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,65+,2024,20.9,0
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,65+,2025,21.6,0
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,All ages,2024,32.2,1
+Changed their privacy settings on social media accounts from the default to a more restricted setting,Tightened social media privacy,Privacy,All ages,2025,30.0,1
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,18-34,2024,24.3,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,18-34,2025,24.0,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,35-64,2024,41.8,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,35-64,2025,39.9,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,65+,2024,51.5,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,65+,2025,52.3,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,All ages,2024,38.7,0
+Regularly updated the security software on their device when prompted by their device's security system,Updated security software,Security,All ages,2025,37.8,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,18-34,2024,18.3,1
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,18-34,2025,16.1,1
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,35-64,2024,21.9,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,35-64,2025,21.0,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,65+,2024,17.3,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,65+,2025,18.9,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,All ages,2024,19.8,0
+Used a virtual private network (VPN) when using the internet,VPN,Privacy,All ages,2025,19.1,0

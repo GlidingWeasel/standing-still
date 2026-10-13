@@ -1,0 +1,180 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Proportional symbol map of fraud victims by state, 2024-2025, with a control to switch fraud type. Circle area shows the number of victims, which mostly follows population.",
+  "usermeta": {
+    "chart": "C5",
+    "idiom": "Proportional symbol map",
+    "section": 2,
+    "source": "ABS Personal Fraud 2024-25, Table 3a, Total '000 by state"
+  },
+  "width": "container",
+  "height": 330,
+  "projection": {
+    "type": "conicEqualArea",
+    "rotate": [-132, 0, 0],
+    "parallels": [-18, -36]
+  },
+  "params": [
+    {
+      "name": "fraudType",
+      "value": "card_fraud",
+      "bind": {
+        "input": "radio",
+        "options": ["card_fraud", "scams", "impersonation"],
+        "labels": ["Card fraud", "Scams", "Online impersonation"],
+        "name": "Fraud type "
+      }
+    }
+  ],
+  "data": {
+    "url": "data/geo/au-states.json",
+    "format": {"type": "topojson", "feature": "au_states"}
+  },
+  "transform": [
+    {"calculate": "geoCentroid(null, datum)", "as": "centroid"},
+    {"calculate": "datum.centroid[0]", "as": "lon"},
+    {"calculate": "datum.centroid[1]", "as": "lat"},
+    {
+      "lookup": "properties.state_name_2021",
+      "from": {
+        "data": {"url": "data/chartready/abs_fraud_by_state.csv"},
+        "key": "state",
+        "fields": [
+          "state",
+          "state_abbr",
+          "card_fraud_000",
+          "scams_000",
+          "impersonation_000",
+          "card_fraud_rate_pct",
+          "scams_rate_pct",
+          "impersonation_rate_pct"
+        ]
+      }
+    },
+    {"calculate": "toNumber(datum[fraudType + '_000'])", "as": "victims_000"},
+    {"calculate": "toNumber(datum[fraudType + '_rate_pct'])", "as": "rate_pct"},
+    {
+      "calculate": "datum.lon + (datum.state_abbr === 'ACT' ? 2.6 : 0)",
+      "as": "label_lon"
+    },
+    {
+      "calculate": "datum.lat - (datum.state_abbr === 'ACT' ? 1.6 : 0)",
+      "as": "label_lat"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "fill": "#DDD8D1",
+        "stroke": "#F7F5F2",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "opacity": 0.8,
+        "stroke": "#F7F5F2",
+        "strokeWidth": 1,
+        "color": "#7A756D"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "size": {
+          "field": "victims_000",
+          "type": "quantitative",
+          "scale": {"zero": true, "range": [0, 4500], "domain": [0, 700]},
+          "legend": {
+            "title": "Victims in 2024-2025",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "symbolFillColor": "#7A756D",
+            "symbolOpacity": 0.8,
+            "values": [50, 200, 700],
+            "labelExpr": "format(datum.value * 1000, ',')"
+          }
+        },
+        "order": {
+          "field": "victims_000",
+          "sort": "descending",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {"field": "state", "type": "nominal", "title": "State"},
+          {
+            "field": "victims_000",
+            "type": "quantitative",
+            "title": "Victims ('000)",
+            "format": ",.1f"
+          },
+          {
+            "field": "rate_pct",
+            "type": "quantitative",
+            "title": "Victimisation rate (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "longitude": {"field": "label_lon", "type": "quantitative"},
+        "latitude": {"field": "label_lat", "type": "quantitative"},
+        "text": {"field": "state_abbr", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_text",
+      "data": {
+        "values": [{"t": "Most victims,|but a rate no|higher than|Australia's"}]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "longitude": {"datum": 156.4},
+        "latitude": {"datum": -31.2},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_arrow",
+      "data": {"values": [{}]},
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "longitude": {"datum": 155.9},
+        "latitude": {"datum": -32.2},
+        "longitude2": {"datum": 153.3},
+        "latitude2": {"datum": -32.2}
+      }
+    },
+    {
+      "name": "callout_head",
+      "data": {"values": [{}]},
+      "mark": {
+        "type": "point",
+        "shape": "triangle-left",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A",
+        "opacity": 1
+      },
+      "encoding": {"longitude": {"datum": 153.1}, "latitude": {"datum": -32.2}}
+    }
+  ]
+}

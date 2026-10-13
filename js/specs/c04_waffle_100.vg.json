@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Waffle chart of 100 figures standing for 100 Australians aged 15 and over. Thirteen experienced personal fraud in 2024-2025, ten of them card fraud.",
+  "usermeta": {
+    "chart": "C4",
+    "idiom": "Waffle (isotype unit chart)",
+    "section": 2,
+    "source": "ABS Personal Fraud 2024-25, Table 4a, Australia rows"
+  },
+  "width": 540,
+  "height": 417,
+  "data": {
+    "url": "data/chartready/abs_fraud_national.csv",
+    "format": {"parse": {"persons_000": "number", "rate_pct": "number"}}
+  },
+  "transform": [
+    {"pivot": "fraud_type", "value": "rate_pct"},
+    {"calculate": "round(datum['Total personal fraud'])", "as": "total_n"},
+    {"calculate": "round(datum['Card fraud'])", "as": "card_n"},
+    {"calculate": "sequence(1, 101)", "as": "idx"},
+    {"flatten": ["idx"]},
+    {"calculate": "(datum.idx - 1) % 10", "as": "col"},
+    {"calculate": "floor((datum.idx - 1) / 10)", "as": "row"},
+    {
+      "calculate": "datum.idx <= datum.card_n ? 'Card fraud' : datum.idx <= datum.total_n ? 'Other fraud' : 'None of these'",
+      "as": "group"
+    },
+    {
+      "calculate": "datum.group === 'Card fraud' ? 'Card fraud, ' + datum.card_n + ' in 100' : datum.group === 'Other fraud' ? 'Other fraud, ' + (datum.total_n - datum.card_n) + ' in 100' : 'None of these, ' + (100 - datum.total_n) + ' in 100'",
+      "as": "group_label"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "col",
+      "type": "quantitative",
+      "scale": {"domain": [-0.5, 9.5]},
+      "axis": null
+    },
+    "y": {
+      "field": "row",
+      "type": "quantitative",
+      "scale": {"domain": [-0.5, 9.5]},
+      "axis": null
+    },
+    "color": {
+      "field": "group_label",
+      "type": "nominal",
+      "scale": {"range": ["#C2410C", "#14161A", "#DDD8D1"]},
+      "legend": {
+        "orient": "bottom",
+        "title": "Each figure is one in 100 people aged 15 and over, 2024-2025",
+        "symbolType": "M -0.3,-0.68 a 0.3,0.3 0 1 0 0.6,0 a 0.3,0.3 0 1 0 -0.6,0 Z M -0.5,-0.28 L 0.5,-0.28 L 0.42,1 L -0.42,1 Z",
+        "labelLimit": 260,
+        "titleLimit": 440,
+        "symbolSize": 260
+      },
+      "sort": {"field": "idx", "op": "min"}
+    },
+    "tooltip": [{"field": "group", "type": "nominal", "title": "This figure"}]
+  },
+  "mark": {
+    "type": "point",
+    "shape": "M -0.3,-0.68 a 0.3,0.3 0 1 0 0.6,0 a 0.3,0.3 0 1 0 -0.6,0 Z M -0.5,-0.28 L 0.5,-0.28 L 0.42,1 L -0.42,1 Z",
+    "filled": true,
+    "size": 1144,
+    "opacity": 1
+  }
+}

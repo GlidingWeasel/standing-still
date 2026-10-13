@@ -1,0 +1,192 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Hexagonal grid map of the share of scam victims whose most serious scam was reported to an authority, 2024-2025. The ACT is highest at 89.2 percent and the only jurisdiction significantly above the national 71.1 percent.",
+  "usermeta": {
+    "chart": "C7",
+    "idiom": "Hexagonal grid map",
+    "section": 3,
+    "source": "ABS Personal Fraud 2024-25, Table 3a, Scams, Reporting rate"
+  },
+  "width": 540,
+  "height": 452,
+  "data": {
+    "values": [
+      {"state_abbr": "NT", "hx": 1, "hy": 0},
+      {"state_abbr": "Qld", "hx": 2, "hy": 0},
+      {"state_abbr": "WA", "hx": 0.5, "hy": 1},
+      {"state_abbr": "SA", "hx": 1.5, "hy": 1},
+      {"state_abbr": "NSW", "hx": 2.5, "hy": 1},
+      {"state_abbr": "Vic", "hx": 2, "hy": 2},
+      {"state_abbr": "ACT", "hx": 3, "hy": 2},
+      {"state_abbr": "Tas", "hx": 2.5, "hy": 3}
+    ]
+  },
+  "transform": [
+    {
+      "lookup": "state_abbr",
+      "from": {
+        "data": {"url": "data/chartready/abs_fraud_by_state.csv"},
+        "key": "state_abbr",
+        "fields": ["state", "scam_reporting_pct", "scams_000"]
+      }
+    },
+    {
+      "calculate": "toNumber(datum.scam_reporting_pct)",
+      "as": "scam_reporting_pct"
+    },
+    {"calculate": "toNumber(datum.scams_000)", "as": "scams_000"},
+    {
+      "calculate": "format(datum.scam_reporting_pct, '.1f') + '%'",
+      "as": "value_label"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "hx",
+      "type": "quantitative",
+      "scale": {"domain": [-0.5, 3.5]},
+      "axis": null
+    },
+    "y": {
+      "field": "hy",
+      "type": "quantitative",
+      "scale": {"domain": [-0.5, 3.5], "reverse": true},
+      "axis": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "point",
+        "shape": "M 0,-1 L 0.866,-0.5 L 0.866,0.5 L 0,1 L -0.866,0.5 L -0.866,-0.5 Z",
+        "filled": true,
+        "size": 22440,
+        "opacity": 1,
+        "stroke": "#F7F5F2",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "color": {
+          "field": "scam_reporting_pct",
+          "type": "quantitative",
+          "scale": {"domain": [60, 90], "scheme": "teals"},
+          "legend": {
+            "title": "Worst scam reported, 2024-2025 (%)",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 200,
+            "titleLimit": 340
+          }
+        },
+        "tooltip": [
+          {"field": "state", "type": "nominal", "title": "State or territory"},
+          {
+            "field": "scam_reporting_pct",
+            "type": "quantitative",
+            "title": "Worst scam reported (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "scams_000",
+            "type": "quantitative",
+            "title": "Scam victims ('000)",
+            "format": ",.1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": -9, "fontSize": 13, "fontWeight": 600},
+      "encoding": {
+        "text": {"field": "state_abbr", "type": "nominal"},
+        "color": {
+          "condition": {
+            "test": "datum.scam_reporting_pct >= 76",
+            "value": "#F7F5F2"
+          },
+          "value": "#14161A"
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": 9, "fontSize": 12},
+      "encoding": {
+        "text": {"field": "value_label", "type": "nominal"},
+        "color": {
+          "condition": {
+            "test": "datum.scam_reporting_pct >= 76",
+            "value": "#F7F5F2"
+          },
+          "value": "#14161A"
+        }
+      }
+    },
+    {
+      "name": "callout_text",
+      "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"datum": 2.6, "type": "quantitative"},
+        "y": {"datum": -0.45, "type": "quantitative"},
+        "text": {
+          "value": "Only the ACT is|significantly above|the national|71.1 percent"
+        }
+      }
+    },
+    {
+      "name": "callout_arrow",
+      "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {"datum": 3.22, "type": "quantitative"},
+        "y": {"datum": 0.13, "type": "quantitative"},
+        "y2": {"datum": 1.4}
+      }
+    },
+    {
+      "name": "callout_head",
+      "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-down",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {"datum": 3.22, "type": "quantitative"},
+        "y": {"datum": 1.41, "type": "quantitative"}
+      }
+    },
+    {
+      "name": "key",
+      "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "lineBreak": "|",
+        "lineHeight": 14,
+        "color": "#5C5F66"
+      },
+      "encoding": {
+        "x": {"datum": -0.4, "type": "quantitative"},
+        "y": {"datum": 2.35, "type": "quantitative"},
+        "text": {
+          "value": "Every state and territory gets|one hexagon of the same size"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Small-multiples choropleth of the personal fraud victimisation rate by state for six survey years, labelled by the year each financial-year survey ended, from 2015 to 2025. Every state is worse than in 2015.",
+  "usermeta": {
+    "chart": "C6",
+    "idiom": "Small-multiples choropleth",
+    "section": 2,
+    "source": "ABS Personal Fraud 2024-25, Table 4a, Total personal fraud, victimisation rate"
+  },
+  "data": {
+    "url": "data/chartready/abs_fraud_rate_by_year.csv",
+    "format": {"parse": {"rate_pct": "number", "year_end": "number"}}
+  },
+  "transform": [
+    {
+      "lookup": "state",
+      "from": {
+        "data": {
+          "url": "data/geo/au-states.json",
+          "format": {"type": "topojson", "feature": "au_states"}
+        },
+        "key": "properties.state_name_2021"
+      },
+      "as": "geo"
+    }
+  ],
+  "facet": {
+    "field": "year_end",
+    "type": "ordinal",
+    "title": null,
+    "header": {
+      "labelFontSize": 12,
+      "labelFontWeight": 600,
+      "labelPadding": 4,
+      "labelExpr": "[datum.value == 2015 ? 'Year to June 2015' : datum.value + '', 'Australia ' + {'2015': '8.5', '2021': '10.6', '2022': '10.8', '2023': '11.1', '2024': '13.0', '2025': '13.1'}[datum.value + ''] + '%']",
+      "labelLineHeight": 15
+    },
+    "sort": "ascending"
+  },
+  "columns": 6,
+  "spacing": {"row": 16, "column": 30},
+  "bounds": "flush",
+  "spec": {
+    "width": 130,
+    "height": 104,
+    "projection": {
+      "type": "conicEqualArea",
+      "rotate": [-132, 0, 0],
+      "parallels": [-18, -36]
+    },
+    "layer": [
+      {
+        "mark": {"type": "geoshape", "stroke": "#F7F5F2", "strokeWidth": 0.8},
+        "encoding": {
+          "shape": {"field": "geo", "type": "geojson"},
+          "color": {
+            "field": "rate_pct",
+            "type": "quantitative",
+            "scale": {"type": "threshold", "domain": [8, 10, 12, 14]},
+            "legend": {
+              "title": "People defrauded (%)",
+              "orient": "bottom",
+              "direction": "horizontal",
+              "gradientLength": 260
+            }
+          },
+          "tooltip": [
+            {"field": "state", "type": "nominal", "title": "State"},
+            {"field": "year", "type": "ordinal", "title": "Financial year"},
+            {
+              "field": "rate_pct",
+              "type": "quantitative",
+              "title": "People defrauded (%)",
+              "format": ".1f"
+            }
+          ]
+        }
+      },
+      {
+        "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+        "mark": {"type": "rule", "color": "#7A756D", "strokeWidth": 0.8},
+        "encoding": {
+          "longitude": {"datum": 149.1},
+          "latitude": {"datum": -35.5},
+          "longitude2": {"datum": 155.2},
+          "latitude2": {"datum": -38.6}
+        }
+      },
+      {
+        "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+        "mark": {
+          "type": "square",
+          "size": 120,
+          "opacity": 1,
+          "stroke": "#7A756D",
+          "strokeWidth": 0.6
+        },
+        "encoding": {
+          "longitude": {"datum": 156},
+          "latitude": {"datum": -39},
+          "color": {
+            "field": "rate_pct",
+            "type": "quantitative",
+            "scale": {"type": "threshold", "domain": [8, 10, 12, 14]}
+          },
+          "tooltip": [
+            {"field": "state", "type": "nominal", "title": "State"},
+            {
+              "field": "rate_pct",
+              "type": "quantitative",
+              "title": "People defrauded (%)",
+              "format": ".1f"
+            }
+          ]
+        }
+      },
+      {
+        "transform": [{"filter": "datum.state_abbr === 'ACT'"}],
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 9,
+          "fontSize": 11,
+          "color": "#14161A"
+        },
+        "encoding": {
+          "longitude": {"datum": 156},
+          "latitude": {"datum": -39},
+          "text": {"value": "ACT"}
+        }
+      }
+    ]
+  }
+}

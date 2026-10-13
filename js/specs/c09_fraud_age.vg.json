@@ -1,0 +1,271 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Heatmap of personal fraud victimisation rate by fraud type and age band, Australia 2024-2025. Card fraud peaks from 45 to 64, and scams stay near their peak after 65.",
+  "usermeta": {
+    "chart": "C9",
+    "idiom": "Heatmap, classed",
+    "section": 4,
+    "source": "ABS Personal Fraud 2024-25, Tables 5a 7a 11a 13a, Age range (years), Victimisation rate"
+  },
+  "width": "container",
+  "height": 340,
+  "padding": {"left": 5, "top": 5, "bottom": 5, "right": 5},
+  "params": [{"name": "linkedBand", "value": null}],
+  "data": {
+    "url": "data/chartready/abs_fraud_by_age.csv",
+    "format": {"parse": {"rate_pct": "number"}}
+  },
+  "transform": [
+    {"calculate": "datum.reliability ? 0.3 : 1", "as": "fade"},
+    {
+      "calculate": "datum.rate_pct < 1 ? 'Under 1' : datum.rate_pct < 2 ? '1 to 2' : datum.rate_pct < 3 ? '2 to 3' : datum.rate_pct < 5 ? '3 to 5' : datum.rate_pct < 10 ? '5 to 10' : '10 or more'",
+      "as": "rate_class"
+    },
+    {
+      "calculate": "datum.reliability === '**' ? 'np' : format(datum.rate_pct, '.1f')",
+      "as": "cell_text"
+    },
+    {
+      "calculate": "datum.reliability === '**' ? 'np, too unreliable for general use (ABS)' : format(datum.rate_pct, '.1f') + (datum.reliability === '*' ? ', use with caution (ABS)' : '')",
+      "as": "rate_text"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "age_band",
+      "type": "ordinal",
+      "sort": ["15-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+      "title": "Age (years)",
+      "axis": {
+        "labelAngle": 0,
+        "orient": "bottom",
+        "domain": false,
+        "ticks": false
+      }
+    },
+    "y": {
+      "field": "fraud_type",
+      "type": "nominal",
+      "sort": ["Card fraud", "Scams", "Online impersonation", "Identity theft"],
+      "title": null,
+      "axis": {"domain": false, "ticks": false}
+    },
+    "opacity": {
+      "field": "fade",
+      "type": "quantitative",
+      "scale": null,
+      "condition": {
+        "test": "linkedBand !== null && datum.aic_band !== linkedBand",
+        "value": 0.2
+      }
+    },
+    "tooltip": [
+      {"field": "fraud_type", "type": "nominal", "title": "Fraud type"},
+      {"field": "age_band", "type": "ordinal", "title": "Age"},
+      {"field": "rate_text", "type": "nominal", "title": "Defrauded (%)"}
+    ]
+  },
+  "layer": [
+    {
+      "mark": {"type": "rect", "stroke": "#F7F5F2", "strokeWidth": 2},
+      "encoding": {
+        "color": {
+          "field": "rate_class",
+          "type": "ordinal",
+          "sort": [
+            "Under 1",
+            "1 to 2",
+            "2 to 3",
+            "3 to 5",
+            "5 to 10",
+            "10 or more"
+          ],
+          "scale": {
+            "scheme": "oranges",
+            "domain": [
+              "Under 1",
+              "1 to 2",
+              "2 to 3",
+              "3 to 5",
+              "5 to 10",
+              "10 or more"
+            ]
+          },
+          "legend": {
+            "title": "Defrauded in 2024-2025 (%)",
+            "orient": "bottom",
+            "symbolType": "square",
+            "columns": 3,
+            "columnPadding": 14,
+            "rowPadding": 6
+          }
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 12},
+      "encoding": {
+        "text": {"field": "cell_text", "type": "nominal"},
+        "color": {
+          "condition": {"test": "datum.rate_pct >= 5", "value": "#F7F5F2"},
+          "value": "#14161A"
+        }
+      }
+    },
+    {
+      "name": "peak_note",
+      "transform": [
+        {
+          "filter": "datum.fraud_type === 'Card fraud' && datum.age_band === '55-64'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_band",
+          "type": "ordinal",
+          "sort": ["15-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+          "bandPosition": 0
+        },
+        "y": {"value": -22},
+        "text": {"value": "Peak, 45 to 64"},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "peak_arrow",
+      "transform": [
+        {
+          "filter": "datum.fraud_type === 'Card fraud' && datum.age_band === '55-64'"
+        }
+      ],
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {
+          "field": "age_band",
+          "type": "ordinal",
+          "sort": ["15-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+          "bandPosition": 0
+        },
+        "y": {"value": -19},
+        "y2": {"value": -6},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "peak_arrowhead",
+      "transform": [
+        {
+          "filter": "datum.fraud_type === 'Card fraud' && datum.age_band === '55-64'"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-down",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_band",
+          "type": "ordinal",
+          "sort": ["15-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+          "bandPosition": 0
+        },
+        "y": {"value": -5},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "old_note",
+      "transform": [
+        {"filter": "datum.fraud_type === 'Scams' && datum.age_band === '65+'"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 26,
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": "width"},
+        "text": {"value": "65+ near|the peak"},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "old_arrow",
+      "transform": [
+        {"filter": "datum.fraud_type === 'Scams' && datum.age_band === '65+'"}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {"value": {"expr": "width + 22"}},
+        "x2": {"value": {"expr": "width + 7"}},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "old_arrowhead",
+      "transform": [
+        {"filter": "datum.fraud_type === 'Scams' && datum.age_band === '65+'"}
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-left",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": {"expr": "width + 5"}},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "key": "Faded cells are less reliable survey estimates.|np marks one too unreliable to publish."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dy": 122,
+        "fontSize": 11,
+        "color": "#5C5F66",
+        "lineBreak": "|",
+        "lineHeight": 14
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": "height"},
+        "text": {"field": "key", "type": "nominal"},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    }
+  ]
+}

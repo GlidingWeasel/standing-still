@@ -1,0 +1,192 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Radial bar chart of the 20 online safety habits the AIC asked Australian adults about in 2025, longest first. Avoiding unknown links is the most common, kept by 64.8 percent of adults. The three habits that guard against suspicious messages are highlighted. None of the 20 is about checking a seller before paying.",
+  "usermeta": {
+    "chart": "C8b",
+    "idiom": "Radial bar chart",
+    "section": 3,
+    "source": "AIC Cybercrime in Australia 2025, Online behaviours and knowledge, all adults, 2025"
+  },
+  "width": "container",
+  "height": 380,
+  "data": {
+    "url": "data/chartready/aic_behaviour_by_age.csv",
+    "format": {"parse": {"pct": "number", "year": "number"}}
+  },
+  "transform": [
+    {"filter": "datum.age_band === 'All ages' && datum.year === 2025"},
+    {
+      "window": [{"op": "row_number", "as": "order"}],
+      "sort": [{"field": "pct", "order": "descending"}]
+    },
+    {"joinaggregate": [{"op": "count", "as": "n"}]},
+    {
+      "calculate": "indexof(['Avoided unknown links', 'Checked a message with the sender', 'Spam filter'], datum.short_label) >= 0 ? 'Guards against suspicious messages' : 'Other online safety habits'",
+      "as": "group"
+    },
+    {
+      "calculate": "{'Checked a message with the sender': 'Checked message with sender', 'Different password for banking': 'Different banking password', 'Parental controls (parents only)': 'Parental controls*', 'Tightened social media privacy': 'Tightened social privacy', 'Checked social media privacy': 'Checked social privacy', 'Changed passwords regularly': 'Changed passwords often'}[datum.short_label] || datum.short_label",
+      "as": "ring_label"
+    },
+    {"calculate": "(datum.order - 0.5) * 360 / datum.n", "as": "mid_deg"},
+    {
+      "calculate": "datum.mid_deg <= 180 ? datum.mid_deg - 90 : datum.mid_deg + 90",
+      "as": "label_angle"
+    },
+    {"calculate": "(datum.order - 1) * 2 * PI / datum.n", "as": "theta_start"},
+    {"calculate": "datum.order * 2 * PI / datum.n", "as": "theta_end"},
+    {"calculate": "(datum.order - 0.5) * 2 * PI / datum.n", "as": "theta_mid"}
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 44,
+        "padAngle": 0.02,
+        "stroke": "#F7F5F2",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "radius": {
+          "field": "pct",
+          "type": "quantitative",
+          "scale": {"type": "linear", "domain": [0, 100], "range": [44, 136]}
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Guards against suspicious messages",
+              "Other online safety habits"
+            ],
+            "range": ["#1A5F70", "#B9B4AD"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "behaviour", "type": "nominal", "title": "Habit"},
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "Adults doing it in 2025 (%)",
+            "format": ".1f"
+          }
+        ],
+        "theta": {
+          "field": "theta_start",
+          "type": "quantitative",
+          "scale": null
+        },
+        "theta2": {"field": "theta_end"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.mid_deg <= 180"}],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 11,
+        "radiusOffset": 5
+      },
+      "encoding": {
+        "text": {"field": "ring_label", "type": "nominal"},
+        "angle": {
+          "field": "label_angle",
+          "type": "quantitative",
+          "scale": null
+        },
+        "color": {
+          "condition": {
+            "test": "datum.group === 'Guards against suspicious messages'",
+            "value": "#1A5F70"
+          },
+          "value": "#5C5F66"
+        },
+        "theta": {"field": "theta_mid", "type": "quantitative", "scale": null},
+        "radius": {
+          "field": "pct",
+          "type": "quantitative",
+          "scale": {"type": "linear", "domain": [0, 100], "range": [44, 136]}
+        }
+      }
+    },
+    {
+      "transform": [{"filter": "datum.mid_deg > 180"}],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "fontSize": 11,
+        "radiusOffset": 5
+      },
+      "encoding": {
+        "text": {"field": "ring_label", "type": "nominal"},
+        "angle": {
+          "field": "label_angle",
+          "type": "quantitative",
+          "scale": null
+        },
+        "color": {
+          "condition": {
+            "test": "datum.group === 'Guards against suspicious messages'",
+            "value": "#1A5F70"
+          },
+          "value": "#5C5F66"
+        },
+        "theta": {"field": "theta_mid", "type": "quantitative", "scale": null},
+        "radius": {
+          "field": "pct",
+          "type": "quantitative",
+          "scale": {"type": "linear", "domain": [0, 100], "range": [44, 136]}
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [{"lines": ["None is", "about", "checking", "a seller"]}]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 11,
+        "lineHeight": 13,
+        "color": "#C2410C",
+        "fontWeight": 600,
+        "dy": -19.5
+      },
+      "encoding": {
+        "theta": {"value": 0},
+        "radius": {"value": 0},
+        "text": {"field": "lines", "type": "nominal"}
+      }
+    },
+    {
+      "name": "key",
+      "data": {
+        "values": [
+          {
+            "k": "Bar length is the|share of adults who|keep the habit|* parents only"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "lineBreak": "|",
+        "lineHeight": 14,
+        "color": "#5C5F66"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": -54},
+        "text": {"field": "k", "type": "nominal"}
+      }
+    }
+  ],
+  "padding": {"left": 0, "top": 0, "bottom": 0, "right": 30}
+}

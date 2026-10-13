@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Standing Still. Australia's cyber security, and the people it misses</title>
+  <meta name="description" content="A data story about Australia's cyber security standing, personal fraud, and who stays safe online.">
+  <meta name="author" content="Joshua Loke">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:wght@400;600&family=Space+Grotesk:wght@700&display=swap">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/pure-min.css" integrity="sha384-kj0X2NG2KHBie8Tq8fH1kxnyWM9XsXQpq7XdwbKmFKjwwaXGKBlB2Klu3VOltSFx" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/grids-responsive-min.css" integrity="sha384-YhmFRTDkeC9Ume8B/oi4qD/DhaNfszjPItSwx3dlivWW4/ZK2P8nPWD6hTKQ1dWN" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.3.0"></script>
+</head>
+<body>
+  <header class="wrap masthead">
+    <div class="pure-g row hero">
+      <div class="pure-u-1 pure-u-lg-3-5">
+        <h1>Standing Still</h1>
+        <p class="standfirst">Australia scores 96.2 out of 100 on the world's Global Cybersecurity Index. So why has our fraud rate risen by half in a decade, and why are the most careful Australians still getting caught?</p>
+        <p class="lead-in hero-lead">The answer starts on the world stage, where most of the world caught up while we stood still.</p>
+      </div>
+      <div class="pure-u-1 pure-u-lg-2-5">
+        <img class="hero-img" src="assets/hero-standing-still.jpg" width="800" height="1200" alt="Illustration of a person standing still on a circuit-board map of Australia, looking at a phone, while streams of teal data and orange scam messages rush past on both sides.">
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section id="s1">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2>The world moved. We didn't.</h2>
+      </div>
+      <p class="wide">Australia's score on the Global Cybersecurity Index (GCI), which the International Telecommunication Union (ITU) publishes, barely changed between 2020 and 2024. It slipped from 97.47 to 96.24. The rest of the world did not stand still. In 2020 only 16 countries scored higher than Australia. By 2024, 44 did, and 12 of them scored a perfect&nbsp;100.</p>
+      <p class="lead-in prose">So did Australia slip, or did everyone else catch up?</p>
+
+      <figure class="fig fig-top-legend">
+        <figcaption>
+          <h3>From Africa to the Pacific, most countries climbed. Australia barely moved.</h3>
+        </figcaption>
+        <div class="map-legend" role="list" aria-label="Change in score, 2020 to 2024">
+          <span class="map-legend-title" aria-hidden="true">Change in score, 2020 to 2024 (points)</span>
+          <span role="listitem"><i class="swatch swatch-fell-big"></i>Fell 10 or more</span>
+          <span role="listitem"><i class="swatch swatch-fell"></i>Fell 2 to 10</span>
+          <span role="listitem"><i class="swatch swatch-still"></i>Moved under 2</span>
+          <span role="listitem"><i class="swatch swatch-rose"></i>Rose 2 to 10</span>
+          <span role="listitem"><i class="swatch swatch-rose-more"></i>Rose 10 to 25</span>
+          <span role="listitem"><i class="swatch swatch-rose-most"></i>Rose 25 or more</span>
+          <span role="listitem" class="map-legend-wide"><i class="swatch swatch-none"></i>No score</span>
+        </div>
+        <div id="c01_gci_world" class="vis-container"></div>
+      </figure>
+
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Thirty-two countries passed Australia. Four fell behind it.</h3>
+          </figcaption>
+          <div id="c02_gci_comet" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Most of that climbing happened below Australia, but 32 countries did pass it. They got there through effort, building, often from scratch, what Australia already had.</p>
+          <p>Pakistan adopted its first national cyber security policy in 2021. Jordan opened a national cyber security centre, and Slovenia set up an independent information security office. Worldwide, countries with a national strategy rose from 107 to 132.</p>
+          <p>Some even organised around the index itself. Jordan formed a national team to raise its score, and Pakistan's policy set a goal of climbing international technology rankings.</p>
+          <p>Australia, already near the top, mostly rested on what it had. It topped up three measures but let four others slip.</p>
+          <p>While others built, Australia stood still.</p>
+        </div>
+      </div>
+      <div class="pure-g row">
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Some of that building was paid for by Australia. Between July 2022 and June 2024, Australia's aid program paid out $26.7 million for cyber and critical technology work in Southeast Asia and the Pacific, $23.6 million of it to 21 named partners.</p>
+          <p>Fifteen of the 17 partners with a score rose 2 points or more, and Vanuatu, which received the most, rose 56. But almost every country that started low climbed, with or without Australian money. Of the 88 that scored under 40 in 2020, 83 rose 2 points or more. So the map shows where the money went, not what it did.</p>
+          <p>Abroad, Australia helped others build. At home, its own score slipped.</p>
+        </div>
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Australia's cyber aid went to its neighbours</h3>
+          </figcaption>
+          <div id="c14_aid_flows" class="vis-container"></div>
+        </figure>
+      </div>
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Australia got better at organisation and worse at technology</h3>
+          </figcaption>
+          <div id="c03_gci_waterfall" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>So why did Australia slip? Its technical score fell 1.13 points and its organisational score rose 1.02, a net fall of just 1.22 out of 100.</p>
+          <p>The only technical measure that fell was teams that respond to attacks in a single sector, such as health or energy. Australia dropped from full marks to just over half. Partly the test got harder. In 2024 the ITU asked whether these teams were fully working, not just whether they existed.</p>
+          <p>Partly the gap was real. The government's own 2023 strategy admitted that sectors such as health had less capability to share and act on threat information.</p>
+        </div>
+      </div>
+      <div class="pure-g row">
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Each of the other three losses lines up with something that happened in 2022. Industry partnerships fell as the government disbanded its industry advisory committee and stopped funding AustCyber, the body set up to grow the cyber industry. Professional training fell as a fund for training cyber workers was paused and then awarded less than half of the $60 million on offer in its second round. Awareness campaigns fell as the government's own industry advisers warned that awareness funding was far too low.</p>
+          <p>Overall spending did not fall. The agency that runs the Australian Cyber Security Centre more than doubled its budget, boosted by a ten-year, $9.9 billion defence package for cyber and intelligence. The money went into that agency, while smaller programs for industry and training were cut back.</p>
+        </div>
+        <figure class="fig fig-fixed pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Spending more than doubled. Four of Australia's scores still fell.</h3>
+          </figcaption>
+          <div id="c03b_spending_scores" class="vis-container"></div>
+        </figure>
+      </div>
+      <p class="prose wide">Two 2023 events line up with the gains, a new national strategy and a National Cyber Security Coordinator, a role created after the Optus hack showed the government had no cyber emergency response function. These are matches in timing, not proven causes. The index records whether a measure exists, not how well it works, and the ITU warns that scores are hard to compare across editions. Australia did not fall apart. It stood still on paper while the world filled in its own forms.</p>
+      <p class="lead-in prose wide">Being world class on paper is one thing. What happened to Australians is another.</p>
+    </section>
+
+    <section id="s2">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2>We moved online. So did fraud.</h2>
+      </div>
+      <p class="wide">A national score measures laws, agencies and plans. It does not measure what happens to people. For that we turn to the Australian Bureau of Statistics Personal Fraud survey. In 2024-2025, 2.9 million Australians aged 15 and over experienced card fraud, a scam or identity theft, the three kinds of personal fraud it has measured since 2014-2015. That is 13.1 percent of people that age, up from 8.5 percent in 2014-2015. Counting online impersonation, which the ABS added in 2021-2022, the total was 3.2 million.</p>
+      <p class="lead-in prose">So why did fraud rise by half while our scores stood still?</p>
+
+      <div class="pure-g row">
+        <figure class="fig fig-fixed pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Thirteen in every 100 Australians were defrauded in a year. Ten were card fraud victims.</h3>
+          </figcaption>
+          <div id="c04_waffle_100" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Card fraud outweighs everything else. Ten of the 13 were card fraud victims, and the other three were hit only by scams or identity theft.</p>
+          <p>Most card fraud happens online. In 2024, nine in every ten dollars lost to card fraud came from payments made without the card present, the payments industry body AusPayNet reports.</p>
+          <p>Overseas sites are the weak spot. Only 3 percent of spending on Australian cards is overseas, yet overseas online fraud is half of all card fraud. Many of those sites skip extra security checks, and international criminal groups use card details stolen in cyber attacks.</p>
+        </div>
+      </div>
+
+      <div class="pure-g row">
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Card fraud drives the growth. It climbed from 6.9 percent in 2020-2021 to 10.4 percent in 2024-2025.</p>
+          <p>Scams went up and down, from a peak of 3.6 percent in 2020-2021 to 2.7 percent in 2024-2025. Identity theft stayed near 1 percent.</p>
+          <p>Why online? COVID-19 lockdowns closed shops and pushed Australians online. Before the pandemic, online sales grew about 14 percent a year. From March to October 2020 they were up an average 67 percent on a year earlier, the ABS found, with a further jump when Victoria's lockdown closed Melbourne stores in August. Fraud grew as spending moved online.</p>
+        </div>
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Card fraud climbed. Scams went up and down.</h3>
+          </figcaption>
+          <div id="c04b_fraud_trend" class="vis-container"></div>
+        </figure>
+      </div>
+
+      <figure class="fig fig-fixed">
+        <figcaption>
+          <h3>Every state is worse than in 2015</h3>
+        </figcaption>
+        <div id="c06_state_multiples" class="vis-container"></div>
+      </figure>
+      <div class="pure-g row note-row">
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>No state or territory escaped. The Northern Territory, the ACT and Queensland rose most, each by more than 6 points, and the ACT had the highest rate in each of the last two surveys. There was no survey between 2014-2015 and 2020-2021, so the first two maps are six years apart.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>The biggest one-year jump came from 2023 to 2024, when the national rate rose from 11.1 to 13.0 percent. That year the value of online card fraud rose 29 percent, AusPayNet reports, while scam compounds spread across Southeast Asia and fake toll, parcel and billing texts increased.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Then the rise stopped. The rate barely moved in 2024-2025, from 13.0 to 13.1 percent. The payments industry says its members' efforts stopped losses on overseas online card payments from growing after 2023-2024.</p></div>
+        </div>
+      </div>
+
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>More people, more victims. The odds barely change by state.</h3>
+          </figcaption>
+          <div id="c05_state_symbols" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>So does where you live change your risk? If fraud moved online, it should matter less. The biggest circles are simply where most people live, in the most populous states.</p>
+          <p>The odds are what count, and they barely change. For card fraud, only Western Australia sits significantly above the national rate, meaning by more than the survey's margin of error, and only South Australia and Tasmania below it.</p>
+          <p>For scams, no state differs significantly from the national rate. That fits scams arriving by phone and online, reaching Hobart as easily as Perth.</p>
+        </div>
+      </div>
+      <p class="prose wide">What about hard times? The consumer watchdog, the ACCC, links cost-of-living pressure to fake job offers, and scammers offer fake financial help to people in hardship. So rising living costs are a plausible reason for some of these scams.</p>
+      <p class="lead-in prose wide">The share of Australians scammed ended the decade about where it started. Where the scams happen moved a lot.</p>
+    </section>
+
+    <section id="s3">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2>Scams barely grew. They moved.</h2>
+      </div>
+      <p class="wide">Scams work differently from card fraud. The ABS only counts someone as scammed if they responded, by asking for more information, handing over money or details, or clicking a link. About 597,000 Australians aged 15 and over were scammed in 2024-2025, much the same share as a decade earlier.</p>
+      <p class="lead-in prose">So which scams faded, and which took their place?</p>
+
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-1-2">
+          <figcaption>
+            <h3>Buying or selling scams nearly doubled. Phishing nearly halved.</h3>
+          </figcaption>
+          <div id="c08_scam_victims" class="vis-container"></div>
+        </figure>
+        <figure class="fig pure-u-1 pure-u-lg-1-2">
+          <figcaption>
+            <h3>The most common online safety habit guards against suspicious messages</h3>
+          </figcaption>
+          <div id="c08b_safety_habits" class="vis-container"></div>
+        </figure>
+      </div>
+      <div class="pure-g row note-row">
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Scams did not disappear. They changed shape. Buying or selling scams, such as fake online shops and false bills, nearly doubled, while phishing, messages that try to trick you into handing over personal details, nearly halved.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Phishing is the scam people are best prepared for. Avoiding unknown links, in teal at the top of the circle, is the most common online safety habit, kept by 64.8 percent of adults, and 72.5 percent of businesses with 200 or more staff run cyber security awareness and training for their staff. Since July 2022 telcos have also had to block scam texts.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Shopping scams slip past both defences. The most common habit guards against suspicious messages, and none of the 20 the Australian Institute of Criminology (AIC) tracks is about checking a seller before you pay. That gap may be why shoppers are now easier to scam.</p></div>
+        </div>
+      </div>
+
+      <div class="pure-g row">
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Scams are also the fraud least often reported. Card fraud was reported for 97.6 percent of victims, counting cases where an organisation told the victim. For scams it was 71.1 percent.</p>
+          <p>The ACT does best at 89.2 percent, the only state or territory significantly above the national rate. Even that is below the card fraud reporting rate of every state and territory.</p>
+          <p>AI may make this worse. The Australian Signals Directorate says criminals use it to make fake voices, videos and websites more convincing, and the National Anti-Scam Centre warns it makes scams harder to recognise and report. It has not yet shown up as more victims in the ABS count.</p>
+        </div>
+        <figure class="fig fig-fixed pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Seven in ten scam victims had their worst scam reported. The ACT stands out.</h3>
+          </figcaption>
+          <div id="c07_hex_reporting" class="vis-container"></div>
+        </figure>
+      </div>
+      <p class="prose wide">The scams did not go away. A text that never arrives cannot trick anyone, but a shopper who does not know to check a seller still can be, and by 2025 the National Anti-Scam Centre found scammers &ldquo;more successful using websites, digital and social media platforms&rdquo;.</p>
+      <p class="lead-in prose wide">A blocked text protects everyone, careful or not. So how much does being careful help?</p>
+    </section>
+
+    <section id="s4">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2>The careful still get hit</h2>
+      </div>
+      <p class="wide">Two surveys let us test whether cyber security awareness protects people. The ABS counts who was defrauded at each age. The AIC asks adults how they rate their own technology knowledge, and which of 20 online safety habits they use, from avoiding unknown links to using a password manager.</p>
+      <p class="lead-in prose">If caution protected people, the most careful age group would be the least scammed. Is it?</p>
+
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Card fraud peaks in midlife. Scams stay high after 65.</h3>
+          </figcaption>
+          <div id="c09_fraud_age" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>The young are defrauded least, but not because they are careful. People aged 15 to 24 had the lowest rates of card fraud and scams, yet 18 to 34 year olds come last on 14 of the 20 online safety habits in the next chart.</p>
+          <p>A plausible reason is that the young have less to steal. Only 18 percent of under-30s held a credit card in 2022, against 61 percent of over-30s. Card fraud seems to follow the money. It peaks in midlife and eases after 65, when fewer people shop online.</p>
+          <p>Scams are the fairer test of caution, because a scam only counts if the person responded. From age 35 the rate stays close to 3 percent, so the over-65s are scammed about as often as the middle-aged.</p>
+        </div>
+      </div>
+
+      <div class="pure-g row">
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>Among Australians aged 65 and over, 84.6 percent avoid links in texts and emails when they are unsure who sent them, against 47.8 percent of 18 to 34 year olds. They lead clearly on 7 of the 20 habits, by 5 points or more. Yet in the ABS count they are scammed more often than 15 to 24 year olds. The AIC's own survey, which covers only internet users and measures fraud differently, finds the reverse.</p>
+          <p>They are also the least confident online. Only 16.0 percent of over-65s rate their technology knowledge as high or very high, against 49.8 percent of 18 to 34 year olds. Awareness, not know-how, sets them apart.</p>
+          <p>They also have more to lose. In 2025 the over-65s were 17.2 percent of the population but carried 26.5 percent of all losses reported to Scamwatch, the government's scam reporting service. The National Anti-Scam Centre says retirement savings may explain their large losses to investment scams.</p>
+        </div>
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>Australians aged 65 and over are the most likely to avoid unknown links</h3>
+          </figcaption>
+          <div id="c10_behaviour_age" class="vis-container"></div>
+          <p class="fig-footnote">Hover an age group to light up the matching age groups in the fraud chart above.</p>
+        </figure>
+      </div>
+
+      <figure class="fig fig-fixed">
+        <figcaption>
+          <h3>Card fraud climbed for almost every age. The over-65s nearly doubled.</h3>
+        </figcaption>
+        <div id="c11_card_fraud_years" class="vis-container"></div>
+      </figure>
+      <div class="pure-g row note-row">
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Card fraud was higher in 2024-2025 than in 2020-2021 for every age group, and clearly so for everyone aged 25 and over. Among Australians aged 65 and over it nearly doubled, from 5.3 to 10.0 percent.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Australians as a whole used fewer online safety habits for the second year running, the AIC says. Among the over-65s, none of the habits fell by more than the survey's margin of error, and three rose.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Card fraud often needs no mistake by the cardholder. Card details can be stolen from a hacked shop website, so being careful cannot always stop it.</p></div>
+        </div>
+      </div>
+      <p class="prose wide">So no. The most careful age group is scammed about as often as the middle-aged, and its card fraud nearly doubled in four years.</p>
+      <p class="lead-in prose wide">Being careful cannot stop your details being stolen from someone else's systems. So how well do businesses and agencies defend theirs?</p>
+    </section>
+
+    <section id="s5">
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2>It is not just households</h2>
+      </div>
+      <p class="wide">Households are not the only targets. The ABS also asks businesses which cyber security measures they have in place, and the privacy regulator records how quickly organisations find and report data breaches.</p>
+      <p class="lead-in prose">So do the smallest businesses defend themselves as well as the largest?</p>
+
+      <div class="pure-g row">
+        <figure class="fig pure-u-1 pure-u-lg-3-5">
+          <figcaption>
+            <h3>The smallest businesses trail on every measure</h3>
+          </figcaption>
+          <div id="c12_business_gap" class="vis-container"></div>
+        </figure>
+        <div class="side-text spread pure-u-1 pure-u-lg-2-5">
+          <p>The widest gap is a written security policy. In 2024-2025 only about 6 percent of businesses with 0 to 4 staff had one, against 71 percent of those with 200 or more. About a third of the smallest had no cyber security measure at all.</p>
+          <p>Small businesses consistently report a lack of time, resources and expertise, the national cyber security strategy notes, and a 2019 survey by the Australian Cyber Security Centre listed the lack of dedicated IT security staff among the barriers.</p>
+          <p>Smaller firms are targets too. One in four small and medium business owners and managers told the AIC that cybercrime had affected their business in the past year.</p>
+        </div>
+      </div>
+
+      <p class="lead-in prose wide">And when organisations are breached, how quickly do they notice and report it?</p>
+      <figure class="fig">
+        <figcaption>
+          <h3>Federal agencies were the slowest to find breaches and to report them, every half-year</h3>
+        </figcaption>
+        <div id="c13_breach_butterfly" class="vis-container"></div>
+        <p class="fig-footnote">Drag the slider to step through each half-year since July 2023.</p>
+      </figure>
+      <div class="pure-g row note-row">
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>These are the five sectors with the most data breaches in each half-year, so the list changes as the slider moves. The law gives an organisation up to 30 days to assess a breach it suspects, but nothing sets a deadline for noticing one.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>In late 2025, agencies fell furthest behind other sectors at that first step. The privacy regulator has found some delays happened because the part of an agency that spotted an incident did not escalate it quickly.</p></div>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-3">
+          <div class="note-box"><p>Slow detection is not new. Between 53 and 87 percent of agency breaches were found more than 30 days after they happened. Only July to December 2025 is published as a data file, so the earlier half-years show shares without counts.</p></div>
+        </div>
+      </div>
+      <p class="lead-in prose wide">Standing still is not the same as standing firm.</p>
+      <p class="prose wide">Australia's defences look strong on paper, yet more Australians are defrauded each year than a decade ago. The clearest improvement in this data, the near halving of phishing victims, came alongside efforts to block scam texts before they arrive, not from points on a global index. The growth came where those protections are thin, on overseas shopping sites and social media. Awareness helps people spot a suspicious message, but it cannot stop card details being stolen from a hacked shop. And the defences are thinnest inside small businesses, while agencies are still slow to notice a breach. Being careful still matters. But the evidence here suggests that systems, not individual caution, decide who gets hit.</p>
+    </section>
+  </main>
+
+  <script type="text/javascript">
+    function loadChartFonts() {
+      var fonts = Promise.all([
+        document.fonts.load('400 12px "IBM Plex Mono"'),
+        document.fonts.load('600 12px "IBM Plex Mono"')
+      ]).catch(function () {});
+      var timeout = new Promise(function (resolve) { setTimeout(resolve, 3000); });
+      return Promise.race([fonts, timeout]);
+    }
+
+    function linkAgeBands(view10, view9) {
+      view10.addSignalListener('ageHover', function (name, value) {
+        var band = value && value.age_band ? value.age_band[0] : null;
+        view9.signal('linkedBand', band).runAsync();
+      });
+    }
+
+    var options = { actions: false, renderer: 'svg', config: 'js/theme.json' };
+
+    loadChartFonts().then(function () {
+      vegaEmbed('#c01_gci_world', 'js/specs/c01_gci_world.vg.json', options).catch(console.error);
+      vegaEmbed('#c02_gci_comet', 'js/specs/c02_gci_comet.vg.json', options).catch(console.error);
+      vegaEmbed('#c14_aid_flows', 'js/specs/c14_aid_flows.vg.json', options).catch(console.error);
+      vegaEmbed('#c03_gci_waterfall', 'js/specs/c03_gci_waterfall.vg.json', options).catch(console.error);
+      vegaEmbed('#c03b_spending_scores', 'js/specs/c03b_spending_scores.vg.json', options).catch(console.error);
+      vegaEmbed('#c04_waffle_100', 'js/specs/c04_waffle_100.vg.json', options).catch(console.error);
+      vegaEmbed('#c04b_fraud_trend', 'js/specs/c04b_fraud_trend.vg.json', options).catch(console.error);
+      vegaEmbed('#c06_state_multiples', 'js/specs/c06_state_multiples.vg.json', options).catch(console.error);
+      vegaEmbed('#c05_state_symbols', 'js/specs/c05_state_symbols.vg.json', options).catch(console.error);
+      vegaEmbed('#c08_scam_victims', 'js/specs/c08_scam_victims.vg.json', options).catch(console.error);
+      vegaEmbed('#c08b_safety_habits', 'js/specs/c08b_safety_habits.vg.json', options).catch(console.error);
+      vegaEmbed('#c07_hex_reporting', 'js/specs/c07_hex_reporting.vg.json', options).catch(console.error);
+      var c09 = vegaEmbed('#c09_fraud_age', 'js/specs/c09_fraud_age.vg.json', options);
+      var c10 = vegaEmbed('#c10_behaviour_age', 'js/specs/c10_behaviour_age.vg.json', options);
+      vegaEmbed('#c11_card_fraud_years', 'js/specs/c11_card_fraud_years.vg.json', options).catch(console.error);
+      vegaEmbed('#c12_business_gap', 'js/specs/c12_business_gap.vg.json', options).catch(console.error);
+      vegaEmbed('#c13_breach_butterfly', 'js/specs/c13_breach_butterfly.vg.json', options).catch(console.error);
+
+      Promise.all([c10, c09]).then(function (results) {
+        linkAgeBands(results[0].view, results[1].view);
+      }).catch(console.error);
+    });
+  </script>
+</body>
+</html>
