@@ -1,0 +1,533 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Flow map of Australian aid for cyber and critical technology to 21 partner countries in South-East Asia and the Pacific, July 2022 to June 2024. Line width shows the money disbursed and arrowheads show its direction. Dots are coloured by the change in each partner's GCI score from 2020 to 2024. Fifteen of the 17 partners with a score rose 2 points or more.",
+  "usermeta": {
+    "chart": "C14",
+    "idiom": "Flow map (origin-destination, one origin)",
+    "section": 1,
+    "source": "DFAT IATI Activity File (data.gov.au), disbursements of the Cyber and Critical Tech Cooperation Program and five related cyber activities, July 2022 to June 2024"
+  },
+  "width": "container",
+  "height": 480,
+  "padding": {"left": 5, "top": 5, "right": 5, "bottom": 5},
+  "projection": {
+    "type": "equalEarth",
+    "rotate": [-150, 0, 0],
+    "fit": {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "MultiPoint",
+        "coordinates": [[93, 24], [191, 24], [93, -44], [191, -44]]
+      }
+    }
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/geo/ne_50m_admin_0_countries.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "transform": [
+        {"calculate": "geoBounds('projection', datum)", "as": "bounds"},
+        {
+          "filter": "datum.bounds[1][0] > 0 && datum.bounds[0][0] < width && datum.bounds[1][1] > 0 && datum.bounds[0][1] < height"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "fill": "#DDD8D1",
+        "stroke": "#F7F5F2",
+        "strokeWidth": 0.5,
+        "clip": true
+      }
+    },
+    {
+      "data": {
+        "url": "data/geo/ne_50m_admin_0_countries.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "transform": [{"filter": "datum.id === 'AUS'"}],
+      "mark": {
+        "type": "geoshape",
+        "filled": false,
+        "stroke": "#C2410C",
+        "strokeWidth": 1.5,
+        "clip": true
+      }
+    },
+    {
+      "name": "flows",
+      "data": {
+        "url": "data/chartready/dfat_cyber_aid.csv",
+        "format": {"parse": {"aud": "number", "lon": "number", "lat": "number"}}
+      },
+      "transform": [
+        {"filter": "isValid(datum.lon)"},
+        {"calculate": "datum.aud / 1000000", "as": "aud_m"},
+        {"calculate": "149.13", "as": "o_lon"},
+        {"calculate": "-35.28", "as": "o_lat"},
+        {
+          "calculate": "datum.lon < 0 ? datum.lon + 360 : datum.lon",
+          "as": "d_lon"
+        },
+        {
+          "calculate": "(datum.o_lon + datum.d_lon) / 2 + 0.18 * (datum.lat - datum.o_lat)",
+          "as": "c_lon"
+        },
+        {
+          "calculate": "(datum.o_lat + datum.lat) / 2 - 0.18 * (datum.d_lon - datum.o_lon)",
+          "as": "c_lat"
+        },
+        {"calculate": "sequence(0, 1.001, 0.05)", "as": "t"},
+        {"flatten": ["t"]},
+        {
+          "calculate": "(1 - datum.t) * (1 - datum.t) * datum.o_lon + 2 * (1 - datum.t) * datum.t * datum.c_lon + datum.t * datum.t * datum.d_lon",
+          "as": "p_lon"
+        },
+        {
+          "calculate": "(1 - datum.t) * (1 - datum.t) * datum.o_lat + 2 * (1 - datum.t) * datum.t * datum.c_lat + datum.t * datum.t * datum.lat",
+          "as": "p_lat"
+        },
+        {
+          "calculate": "geoCentroid('projection', {type: 'Point', coordinates: [datum.p_lon, datum.p_lat]})",
+          "as": "p"
+        },
+        {
+          "calculate": "geoCentroid('projection', {type: 'Point', coordinates: [datum.d_lon, datum.lat]})",
+          "as": "e"
+        },
+        {
+          "calculate": "geoCentroid('projection', {type: 'Point', coordinates: [0.01 * datum.o_lon + 0.18 * datum.c_lon + 0.81 * datum.d_lon, 0.01 * datum.o_lat + 0.18 * datum.c_lat + 0.81 * datum.lat]})",
+          "as": "b"
+        },
+        {"calculate": "datum.e[0] - datum.b[0]", "as": "dx"},
+        {"calculate": "datum.e[1] - datum.b[1]", "as": "dy"},
+        {
+          "calculate": "sqrt(datum.dx * datum.dx + datum.dy * datum.dy)",
+          "as": "len"
+        },
+        {
+          "calculate": "sqrt(pow(datum.p[0] - datum.e[0], 2) + pow(datum.p[1] - datum.e[1], 2)) < 12.5",
+          "as": "under_head"
+        },
+        {
+          "calculate": "datum.under_head ? datum.e[0] - datum.dx / datum.len * 12.5 : datum.p[0]",
+          "as": "px"
+        },
+        {
+          "calculate": "datum.under_head ? datum.e[1] - datum.dy / datum.len * 12.5 : datum.p[1]",
+          "as": "py"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "color": "#C2410C",
+        "opacity": 0.7,
+        "strokeCap": "round"
+      },
+      "encoding": {
+        "x": {"field": "px", "type": "quantitative", "scale": null},
+        "y": {"field": "py", "type": "quantitative", "scale": null},
+        "detail": {"field": "iso3", "type": "nominal"},
+        "order": {"field": "t", "type": "quantitative"},
+        "size": {
+          "field": "aud_m",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "zero": true,
+            "domain": [0, 3.5],
+            "range": [0, 7]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Partner"},
+          {
+            "field": "aud_m",
+            "type": "quantitative",
+            "title": "Aid, July 2022 to June 2024 ($ million)",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "name": "arrowheads",
+      "data": {
+        "url": "data/chartready/dfat_cyber_aid.csv",
+        "format": {"parse": {"aud": "number", "lon": "number", "lat": "number"}}
+      },
+      "transform": [
+        {"filter": "isValid(datum.lon)"},
+        {"calculate": "datum.aud / 1000000", "as": "aud_m"},
+        {"calculate": "149.13", "as": "o_lon"},
+        {"calculate": "-35.28", "as": "o_lat"},
+        {
+          "calculate": "datum.lon < 0 ? datum.lon + 360 : datum.lon",
+          "as": "d_lon"
+        },
+        {
+          "calculate": "(datum.o_lon + datum.d_lon) / 2 + 0.18 * (datum.lat - datum.o_lat)",
+          "as": "c_lon"
+        },
+        {
+          "calculate": "(datum.o_lat + datum.lat) / 2 - 0.18 * (datum.d_lon - datum.o_lon)",
+          "as": "c_lat"
+        },
+        {
+          "calculate": "0.01 * datum.o_lon + 0.18 * datum.c_lon + 0.81 * datum.d_lon",
+          "as": "b_lon"
+        },
+        {
+          "calculate": "0.01 * datum.o_lat + 0.18 * datum.c_lat + 0.81 * datum.lat",
+          "as": "b_lat"
+        },
+        {
+          "calculate": "geoCentroid('projection', {type: 'Point', coordinates: [datum.d_lon, datum.lat]})",
+          "as": "e"
+        },
+        {
+          "calculate": "geoCentroid('projection', {type: 'Point', coordinates: [datum.b_lon, datum.b_lat]})",
+          "as": "b"
+        },
+        {"calculate": "datum.e[0] - datum.b[0]", "as": "dx"},
+        {"calculate": "datum.e[1] - datum.b[1]", "as": "dy"},
+        {
+          "calculate": "sqrt(datum.dx * datum.dx + datum.dy * datum.dy)",
+          "as": "len"
+        },
+        {
+          "calculate": "datum.e[0] - datum.dx / datum.len * 9.5",
+          "as": "head_x"
+        },
+        {
+          "calculate": "datum.e[1] - datum.dy / datum.len * 9.5",
+          "as": "head_y"
+        },
+        {
+          "calculate": "atan2(datum.dx, -datum.dy) * 180 / PI",
+          "as": "head_angle"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "M 0,-1 L 0.889,1 L -0.889,1 Z",
+        "size": 81,
+        "filled": true,
+        "color": "#C2410C",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {"field": "head_x", "type": "quantitative", "scale": null},
+        "y": {"field": "head_y", "type": "quantitative", "scale": null},
+        "angle": {"field": "head_angle", "type": "quantitative", "scale": null},
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Partner"},
+          {
+            "field": "aud_m",
+            "type": "quantitative",
+            "title": "Aid, July 2022 to June 2024 ($ million)",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "name": "partners",
+      "data": {
+        "url": "data/chartready/dfat_cyber_aid.csv",
+        "format": {
+          "parse": {
+            "aud": "number",
+            "lon": "number",
+            "lat": "number",
+            "score_2020": "number",
+            "score_2024": "number"
+          }
+        }
+      },
+      "transform": [
+        {"filter": "isValid(datum.lon)"},
+        {"calculate": "datum.aud / 1000000", "as": "aud_m"},
+        {
+          "calculate": "isValid(datum.score_2020) ? datum.score_2024 - datum.score_2020 : null",
+          "as": "change"
+        },
+        {
+          "calculate": "!isValid(datum.change) ? 'No score' : datum.change < -10 ? 'Fell 10 or more' : datum.change < -2 ? 'Fell 2 to 10' : datum.change < 2 ? 'Moved under 2' : datum.change < 10 ? 'Rose 2 to 10' : datum.change < 25 ? 'Rose 10 to 25' : 'Rose 25 or more'",
+          "as": "band"
+        },
+        {
+          "calculate": "isValid(datum.score_2020) ? format(datum.score_2020, '.2f') : isValid(datum.score_2024) ? 'No data collected by ITU' : 'No score'",
+          "as": "score_2020_text"
+        },
+        {
+          "calculate": "isValid(datum.score_2024) ? format(datum.score_2024, '.2f') : 'No score'",
+          "as": "score_2024_text"
+        },
+        {
+          "calculate": "isValid(datum.change) ? format(datum.change, '+.2f') : 'Not available'",
+          "as": "change_text"
+        }
+      ],
+      "mark": {"type": "circle", "size": 60, "opacity": 1, "strokeWidth": 1},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "color": {
+          "field": "band",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              "Fell 10 or more",
+              "Fell 2 to 10",
+              "Moved under 2",
+              "Rose 2 to 10",
+              "Rose 10 to 25",
+              "Rose 25 or more",
+              "No score"
+            ],
+            "range": [
+              "#A6301F",
+              "#E0957F",
+              "#E4DFD8",
+              "#62AFAE",
+              "#2F8A91",
+              "#1A5F70",
+              "#F7F5F2"
+            ]
+          },
+          "legend": {
+            "title": "Change in score, 2020 to 2024",
+            "values": [
+              "Rose 25 or more",
+              "Rose 10 to 25",
+              "Rose 2 to 10",
+              "Moved under 2",
+              "No score"
+            ],
+            "orient": "none",
+            "legendX": 318,
+            "legendY": 0,
+            "columns": 2,
+            "columnPadding": 10,
+            "rowPadding": 4,
+            "symbolType": "circle",
+            "symbolStrokeColor": "#7A756D",
+            "symbolStrokeWidth": 1,
+            "titleLimit": 260
+          }
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.band === 'Moved under 2' || datum.band === 'No score'",
+            "value": "#7A756D"
+          },
+          "value": "#F7F5F2"
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Partner"},
+          {
+            "field": "aud_m",
+            "type": "quantitative",
+            "title": "Aid, July 2022 to June 2024 ($ million)",
+            "format": ".2f"
+          },
+          {
+            "field": "score_2020_text",
+            "type": "nominal",
+            "title": "GCI score 2020"
+          },
+          {
+            "field": "score_2024_text",
+            "type": "nominal",
+            "title": "GCI score 2024"
+          },
+          {
+            "field": "change_text",
+            "type": "nominal",
+            "title": "Change (points)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "partner_labels",
+      "data": {
+        "url": "data/chartready/dfat_cyber_aid.csv",
+        "format": {"parse": {"lon": "number", "lat": "number"}}
+      },
+      "transform": [
+        {"filter": "isValid(datum.lon)"},
+        {
+          "calculate": "{'VNM': 'Vietnam', 'LAO': 'Laos', 'FSM': 'Micronesia', 'SLB': 'Solomon Is.', 'MHL': 'Marshall Is.'}[datum.iso3] || datum.country",
+          "as": "label"
+        },
+        {
+          "calculate": "indexof(['TKL', 'NIU', 'WSM', 'TLS', 'FSM', 'MYS', 'IDN', 'THA', 'LAO', 'TON', 'NRU', 'PLW'], datum.iso3) >= 0",
+          "as": "label_left"
+        }
+      ],
+      "layer": [
+        {
+          "transform": [{"filter": "!datum.label_left"}],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 7,
+            "fontSize": 11
+          },
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "text": {"field": "label", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [{"filter": "datum.label_left"}],
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "middle",
+            "dx": -7,
+            "fontSize": 11
+          },
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "text": {"field": "label", "type": "nominal"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "australia_label",
+      "data": {"values": [{"lon": 122.5, "lat": -25.5, "t": "Australia"}]},
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#C2410C"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "name": "origin",
+      "data": {"values": [{"lon": 149.13, "lat": -35.28}]},
+      "mark": {"type": "circle", "size": 30, "color": "#14161A", "opacity": 1},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"}
+      }
+    },
+    {
+      "name": "width_key_title",
+      "data": {"values": [{"t": "Aid ($ million)"}]},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 394},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "name": "width_key_lines",
+      "data": {
+        "values": [
+          {"aud_m": 0.5, "ky": 412},
+          {"aud_m": 1, "ky": 428},
+          {"aud_m": 3, "ky": 444}
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#C2410C",
+        "opacity": 0.7,
+        "strokeCap": "butt"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "x2": {"value": 28},
+        "y": {"field": "ky", "type": "quantitative", "scale": null},
+        "size": {"field": "aud_m", "type": "quantitative"}
+      }
+    },
+    {
+      "name": "width_key_text",
+      "data": {
+        "values": [
+          {"t": "0.5", "ky": 412},
+          {"t": "1", "ky": 428},
+          {"t": "3", "ky": 444}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 11,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": 34},
+        "y": {"field": "ky", "type": "quantitative", "scale": null},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_text",
+      "data": {
+        "url": "data/chartready/dfat_cyber_aid.csv",
+        "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+      },
+      "transform": [
+        {"filter": "isValid(datum.score_2020)"},
+        {
+          "calculate": "datum.score_2024 - datum.score_2020 >= 2 ? 1 : 0",
+          "as": "rose"
+        },
+        {
+          "aggregate": [
+            {"op": "count", "as": "n"},
+            {"op": "sum", "field": "rose", "as": "n_rose"}
+          ]
+        },
+        {
+          "calculate": "datum.n_rose + ' of the ' + datum.n + ' partners|with a score rose|2 points or more'",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "longitude": {"datum": 94},
+        "latitude": {"datum": -12.5},
+        "text": {"field": "note", "type": "nominal"}
+      }
+    }
+  ]
+}

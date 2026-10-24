@@ -1,0 +1,81 @@
+iso3,pillar,code,indicator,score_2020,score_2024,countries_full_2024
+AUS,Capacity development,CDS_CYB_PROF_TRAIN,Training for Cybersecurity Professionals - CDS2,1.0,0.95691,44
+AUS,Capacity development,CDS_GOV_ACAD,Educational programs or academic curricula in cybersecurity - CDS3,1.0,1.0,59
+AUS,Capacity development,CDS_GOV_MCNSM,Government Incentive Mechanisms - CDS6,1.0,1.0,64
+AUS,Capacity development,CDS_NAT_CYB_IND,National cybersecurity industry - CDS5,1.0,1.0,109
+AUS,Capacity development,CDS_PUB_CYB_AWE,Public cybersecurity awareness campaigns - CDS1,1.0,0.90581,27
+AUS,Capacity development,CDS_RND_PROG,Research and development programs on cybersecurity -CDS4,1.0,1.0,72
+AUS,Cooperation,COOP_BLTRL_AGR,Bilateral agreements on cybersecurity cooperation with other countries - CS1,0.85554,1.0,94
+AUS,Cooperation,COOP_CYB_MULT_AGR,Cybersecurity multilateral agreements -CS3,1.0,1.0,142
+AUS,Cooperation,COOP_GOV_INT_PART,Government participation in international mechanisms related to cybersecurity activities -CS2,1.0,1.0,169
+AUS,Cooperation,COOP_INTER_AGNCY,Inter-agency - CS5,1.0,1.0,122
+AUS,Cooperation,COOP_PPPS,Partnerships with the private sector - CS4,1.0,0.79857,68
+AUS,Legal,LEGL_CBRCR_REG,Cybercrime Regulation - LS2,1.0,1.0,70
+AUS,Legal,LEGL_CBRCR_SUBS,Cybercrime substantive law - LS1,1.0,1.0,121
+AUS,Organisational,ORG_CYB_MET,Cybersecurity metrics - OS3,1.0,1.0,64
+AUS,Organisational,ORG_NTNL_STR,National Cybersecurity Strategy - OS1,0.8931,1.0,85
+AUS,Organisational,ORG_RSP_AGNC,Responsible Agency - OS2,1.0,1.0,99
+AUS,Technical,TECH_CHLD_PROT,Child Online Protection - TS4,1.0,,0
+AUS,Technical,TECH_NAT_CCC,National CERT/CIRT/ CSIRT - TS1,0.84852,1.0,60
+AUS,Technical,TECH_NTNL_FRMW,National framework for implementation of cybersecurity standards - TS3,1.0,1.0,92
+AUS,Technical,TECH_SECT_CCC,Sectorial CERT/CIRT/ CSIRT - TS2,1.0,0.56497,49
+JOR,Capacity development,CDS_CYB_PROF_TRAIN,Training for Cybersecurity Professionals - CDS2,0.51451,1.0,44
+JOR,Capacity development,CDS_GOV_ACAD,Educational programs or academic curricula in cybersecurity - CDS3,0.70893,1.0,59
+JOR,Capacity development,CDS_GOV_MCNSM,Government Incentive Mechanisms - CDS6,0.49286,1.0,64
+JOR,Capacity development,CDS_NAT_CYB_IND,National cybersecurity industry - CDS5,1.0,1.0,109
+JOR,Capacity development,CDS_PUB_CYB_AWE,Public cybersecurity awareness campaigns - CDS1,0.35168,1.0,27
+JOR,Capacity development,CDS_RND_PROG,Research and development programs on cybersecurity -CDS4,0.375,1.0,72
+JOR,Cooperation,COOP_BLTRL_AGR,Bilateral agreements on cybersecurity cooperation with other countries - CS1,1.0,1.0,94
+JOR,Cooperation,COOP_CYB_MULT_AGR,Cybersecurity multilateral agreements -CS3,1.0,1.0,142
+JOR,Cooperation,COOP_GOV_INT_PART,Government participation in international mechanisms related to cybersecurity activities -CS2,1.0,1.0,169
+JOR,Cooperation,COOP_INTER_AGNCY,Inter-agency - CS5,0.0,1.0,122
+JOR,Cooperation,COOP_PPPS,Partnerships with the private sector - CS4,0.54722,1.0,68
+JOR,Legal,LEGL_CBRCR_REG,Cybercrime Regulation - LS2,1.0,1.0,70
+JOR,Legal,LEGL_CBRCR_SUBS,Cybercrime substantive law - LS1,0.84017,1.0,121
+JOR,Organisational,ORG_CYB_MET,Cybersecurity metrics - OS3,0.0,1.0,64
+JOR,Organisational,ORG_NTNL_STR,National Cybersecurity Strategy - OS1,1.0,1.0,85
+JOR,Organisational,ORG_RSP_AGNC,Responsible Agency - OS2,1.0,1.0,99
+JOR,Technical,TECH_CHLD_PROT,Child Online Protection - TS4,1.0,,0
+JOR,Technical,TECH_NAT_CCC,National CERT/CIRT/ CSIRT - TS1,0.42074,1.0,60
+JOR,Technical,TECH_NTNL_FRMW,National framework for implementation of cybersecurity standards - TS3,0.0,1.0,92
+JOR,Technical,TECH_SECT_CCC,Sectorial CERT/CIRT/ CSIRT - TS2,0.83331,0.86789,49
+PAK,Capacity development,CDS_CYB_PROF_TRAIN,Training for Cybersecurity Professionals - CDS2,1.0,1.0,44
+PAK,Capacity development,CDS_GOV_ACAD,Educational programs or academic curricula in cybersecurity - CDS3,0.40893,1.0,59
+PAK,Capacity development,CDS_GOV_MCNSM,Government Incentive Mechanisms - CDS6,1.0,1.0,64
+PAK,Capacity development,CDS_NAT_CYB_IND,National cybersecurity industry - CDS5,1.0,1.0,109
+PAK,Capacity development,CDS_PUB_CYB_AWE,Public cybersecurity awareness campaigns - CDS1,0.76764,1.0,27
+PAK,Capacity development,CDS_RND_PROG,Research and development programs on cybersecurity -CDS4,1.0,1.0,72
+PAK,Cooperation,COOP_BLTRL_AGR,Bilateral agreements on cybersecurity cooperation with other countries - CS1,0.5,1.0,94
+PAK,Cooperation,COOP_CYB_MULT_AGR,Cybersecurity multilateral agreements -CS3,0.0,0.5,142
+PAK,Cooperation,COOP_GOV_INT_PART,Government participation in international mechanisms related to cybersecurity activities -CS2,1.0,1.0,169
+PAK,Cooperation,COOP_INTER_AGNCY,Inter-agency - CS5,0.0,1.0,122
+PAK,Cooperation,COOP_PPPS,Partnerships with the private sector - CS4,0.54722,1.0,68
+PAK,Legal,LEGL_CBRCR_REG,Cybercrime Regulation - LS2,0.6273,1.0,70
+PAK,Legal,LEGL_CBRCR_SUBS,Cybercrime substantive law - LS1,1.0,1.0,121
+PAK,Organisational,ORG_CYB_MET,Cybersecurity metrics - OS3,0.68405,1.0,64
+PAK,Organisational,ORG_NTNL_STR,National Cybersecurity Strategy - OS1,0.19944,1.0,85
+PAK,Organisational,ORG_RSP_AGNC,Responsible Agency - OS2,1.0,1.0,99
+PAK,Technical,TECH_CHLD_PROT,Child Online Protection - TS4,0.0,,0
+PAK,Technical,TECH_NAT_CCC,National CERT/CIRT/ CSIRT - TS1,0.59864,0.79621,60
+PAK,Technical,TECH_NTNL_FRMW,National framework for implementation of cybersecurity standards - TS3,0.75741,1.0,92
+PAK,Technical,TECH_SECT_CCC,Sectorial CERT/CIRT/ CSIRT - TS2,1.0,1.0,49
+SVN,Capacity development,CDS_CYB_PROF_TRAIN,Training for Cybersecurity Professionals - CDS2,1.0,0.97206,44
+SVN,Capacity development,CDS_GOV_ACAD,Educational programs or academic curricula in cybersecurity - CDS3,1.0,1.0,59
+SVN,Capacity development,CDS_GOV_MCNSM,Government Incentive Mechanisms - CDS6,0.49286,1.0,64
+SVN,Capacity development,CDS_NAT_CYB_IND,National cybersecurity industry - CDS5,1.0,1.0,109
+SVN,Capacity development,CDS_PUB_CYB_AWE,Public cybersecurity awareness campaigns - CDS1,0.87505,0.81161,27
+SVN,Capacity development,CDS_RND_PROG,Research and development programs on cybersecurity -CDS4,1.0,1.0,72
+SVN,Cooperation,COOP_BLTRL_AGR,Bilateral agreements on cybersecurity cooperation with other countries - CS1,0.0,1.0,94
+SVN,Cooperation,COOP_CYB_MULT_AGR,Cybersecurity multilateral agreements -CS3,1.0,1.0,142
+SVN,Cooperation,COOP_GOV_INT_PART,Government participation in international mechanisms related to cybersecurity activities -CS2,1.0,1.0,169
+SVN,Cooperation,COOP_INTER_AGNCY,Inter-agency - CS5,1.0,1.0,122
+SVN,Cooperation,COOP_PPPS,Partnerships with the private sector - CS4,0.0,1.0,68
+SVN,Legal,LEGL_CBRCR_REG,Cybercrime Regulation - LS2,1.0,1.0,70
+SVN,Legal,LEGL_CBRCR_SUBS,Cybercrime substantive law - LS1,1.0,1.0,121
+SVN,Organisational,ORG_CYB_MET,Cybersecurity metrics - OS3,0.65603,1.0,64
+SVN,Organisational,ORG_NTNL_STR,National Cybersecurity Strategy - OS1,0.49539,0.74211,85
+SVN,Organisational,ORG_RSP_AGNC,Responsible Agency - OS2,1.0,1.0,99
+SVN,Technical,TECH_CHLD_PROT,Child Online Protection - TS4,1.0,,0
+SVN,Technical,TECH_NAT_CCC,National CERT/CIRT/ CSIRT - TS1,0.92426,0.9541,60
+SVN,Technical,TECH_NTNL_FRMW,National framework for implementation of cybersecurity standards - TS3,0.0,1.0,92
+SVN,Technical,TECH_SECT_CCC,Sectorial CERT/CIRT/ CSIRT - TS2,0.33798,0.92028,49

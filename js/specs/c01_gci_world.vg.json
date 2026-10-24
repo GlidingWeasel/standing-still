@@ -1,0 +1,406 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "World choropleth of the change in each country's ITU Global Cybersecurity Index score from 2020 to 2024, classed on a diverging scale around zero. 169 of the 191 countries scored in both years rose. Australia moved less than 2 points and was one of the 22 that fell. A control highlights the countries that fell or that passed Australia.",
+  "usermeta": {
+    "chart": "C1",
+    "idiom": "Classed diverging choropleth",
+    "section": 1,
+    "source": "ITU Global Cybersecurity Index via World Bank Data360, ITU_GCI_GCI_OVRL_SCRE"
+  },
+  "width": "container",
+  "height": 440,
+  "projection": {"type": "equalEarth", "rotate": [-150, 0, 0]},
+  "params": [
+    {
+      "name": "focus",
+      "value": "all",
+      "bind": {
+        "input": "radio",
+        "options": ["all", "fell", "passed"],
+        "labels": ["All countries", "Fell", "Passed Australia"],
+        "name": "Show "
+      }
+    }
+  ],
+  "data": {
+    "url": "data/geo/ne_50m_admin_0_countries.json",
+    "format": {"type": "topojson", "feature": "countries"}
+  },
+  "transform": [
+    {"filter": "datum.id !== 'ATA'"},
+    {
+      "lookup": "id",
+      "from": {
+        "data": {"url": "data/chartready/itu_gci_overall.csv"},
+        "key": "iso3",
+        "fields": ["iso3", "country", "score_2020", "score_2024"]
+      }
+    },
+    {"calculate": "toNumber(datum.score_2020)", "as": "score_2020"},
+    {"calculate": "toNumber(datum.score_2024)", "as": "score_2024"},
+    {
+      "calculate": "isValid(datum.score_2020) && isValid(datum.score_2024) ? round((datum.score_2024 - datum.score_2020) * 100) / 100 : null",
+      "as": "change"
+    },
+    {
+      "calculate": "datum.iso3 === 'AUS' ? datum.score_2020 : null",
+      "as": "aus_2020_row"
+    },
+    {
+      "calculate": "datum.iso3 === 'AUS' ? datum.score_2024 : null",
+      "as": "aus_2024_row"
+    },
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "aus_2020_row", "as": "aus_2020"},
+        {"op": "max", "field": "aus_2024_row", "as": "aus_2024"}
+      ]
+    },
+    {
+      "calculate": "datum.score_2020 < datum.aus_2020 && datum.score_2024 > datum.aus_2024",
+      "as": "passed"
+    },
+    {
+      "calculate": "!isValid(datum.change) ? 'No score' : datum.change < -10 ? 'Fell 10 or more' : datum.change < -2 ? 'Fell 2 to 10' : datum.change < 2 ? 'Moved under 2' : datum.change < 10 ? 'Rose 2 to 10' : datum.change < 25 ? 'Rose 10 to 25' : 'Rose 25 or more'",
+      "as": "band"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#B9B4AD",
+        "strokeWidth": 0.6,
+        "strokeDash": [2, 2],
+        "fill": "#F7F5F2"
+      },
+      "encoding": {"tooltip": {"field": "note", "type": "nominal"}},
+      "transform": [
+        {"filter": "!isValid(datum.change)"},
+        {
+          "calculate": "isValid(datum.score_2024) ? 'No 2020 score for ' + datum.properties.name + ' (ITU collected no data that year)' : 'No score for ' + datum.properties.name",
+          "as": "note"
+        }
+      ]
+    },
+    {
+      "mark": {"type": "geoshape", "strokeWidth": 0.4},
+      "encoding": {
+        "color": {
+          "field": "band",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              "Fell 10 or more",
+              "Fell 2 to 10",
+              "Moved under 2",
+              "Rose 2 to 10",
+              "Rose 10 to 25",
+              "Rose 25 or more"
+            ],
+            "range": [
+              "#A6301F",
+              "#E0957F",
+              "#E4DFD8",
+              "#62AFAE",
+              "#2F8A91",
+              "#1A5F70"
+            ]
+          },
+          "legend": null
+        },
+        "opacity": {
+          "condition": {
+            "test": "focus === 'all' || (focus === 'fell' && datum.change < 0) || (focus === 'passed' && datum.passed) || datum.iso3 === 'AUS'",
+            "value": 1
+          },
+          "value": 0.15
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country"},
+          {
+            "field": "score_2020",
+            "type": "quantitative",
+            "title": "Score 2020",
+            "format": ".1f"
+          },
+          {
+            "field": "score_2024",
+            "type": "quantitative",
+            "title": "Score 2024",
+            "format": ".1f"
+          },
+          {
+            "field": "change",
+            "type": "quantitative",
+            "title": "Change (points)",
+            "format": "+.1f"
+          }
+        ],
+        "stroke": {
+          "condition": {
+            "test": "datum.band === 'Moved under 2'",
+            "value": "#B9B4AD"
+          },
+          "value": "#F7F5F2"
+        }
+      },
+      "transform": [{"filter": "isValid(datum.change)"}]
+    },
+    {
+      "transform": [{"filter": "datum.iso3 === 'AUS'"}],
+      "mark": {
+        "type": "geoshape",
+        "filled": false,
+        "stroke": "#C2410C",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country"},
+          {
+            "field": "score_2020",
+            "type": "quantitative",
+            "title": "Score 2020",
+            "format": ".1f"
+          },
+          {
+            "field": "score_2024",
+            "type": "quantitative",
+            "title": "Score 2024",
+            "format": ".1f"
+          },
+          {
+            "field": "change",
+            "type": "quantitative",
+            "title": "Change (points)",
+            "format": "+.1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {"name": "pacific_dots"},
+      "transform": [
+        {
+          "lookup": "iso3",
+          "from": {
+            "data": {"url": "data/chartready/itu_gci_overall.csv"},
+            "key": "iso3",
+            "fields": ["country", "score_2020", "score_2024"]
+          }
+        },
+        {
+          "calculate": "isValid(toNumber(datum.score_2020)) && isValid(toNumber(datum.score_2024)) ? round((toNumber(datum.score_2024) - toNumber(datum.score_2020)) * 100) / 100 : null",
+          "as": "change"
+        },
+        {"filter": "isValid(datum.change)"},
+        {
+          "calculate": "datum.change < -10 ? 'Fell 10 or more' : datum.change < -2 ? 'Fell 2 to 10' : datum.change < 2 ? 'Moved under 2' : datum.change < 10 ? 'Rose 2 to 10' : datum.change < 25 ? 'Rose 10 to 25' : 'Rose 25 or more'",
+          "as": "band"
+        }
+      ],
+      "mark": {"type": "circle", "size": 40, "strokeWidth": 1},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "color": {"field": "band", "type": "ordinal"},
+        "opacity": {
+          "condition": {
+            "test": "focus === 'all' || (focus === 'fell' && datum.change < 0)",
+            "value": 1
+          },
+          "value": 0.15
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.band === 'Moved under 2'",
+            "value": "#7A756D"
+          },
+          "value": "#F7F5F2"
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country"},
+          {
+            "field": "score_2020",
+            "type": "quantitative",
+            "title": "Score 2020",
+            "format": ".1f"
+          },
+          {
+            "field": "score_2024",
+            "type": "quantitative",
+            "title": "Score 2024",
+            "format": ".1f"
+          },
+          {
+            "field": "change",
+            "type": "quantitative",
+            "title": "Change (points)",
+            "format": "+.1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/chartready/itu_gci_overall.csv",
+        "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+      },
+      "transform": [
+        {
+          "filter": "isValid(toNumber(datum.score_2020)) && isValid(toNumber(datum.score_2024))"
+        },
+        {
+          "calculate": "round((datum.score_2024 - datum.score_2020) * 100) / 100",
+          "as": "change"
+        },
+        {"calculate": "datum.change > 0 ? 1 : 0", "as": "rose"},
+        {"calculate": "datum.change < 0 ? 1 : 0", "as": "fell"},
+        {
+          "aggregate": [
+            {"op": "sum", "field": "rose", "as": "n_rose"},
+            {"op": "sum", "field": "fell", "as": "n_fell"},
+            {"op": "count", "as": "n"}
+          ]
+        },
+        {
+          "calculate": "[datum.n_rose + ' of ' + datum.n + ' countries', 'raised their score.', 'Australia was one of', 'the ' + datum.n_fell + ' that fell.']",
+          "as": "lines"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "lineHeight": 18,
+        "color": "#14161A",
+        "fontWeight": 600
+      },
+      "encoding": {
+        "longitude": {"datum": -160},
+        "latitude": {"datum": -28},
+        "text": {
+          "field": "lines",
+          "type": "nominal",
+          "condition": {"test": "width < 600", "value": ""}
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/chartready/itu_gci_overall.csv",
+        "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+      },
+      "transform": [
+        {"filter": "datum.iso3 === 'AUS'"},
+        {
+          "calculate": "'Australia ' + format(datum.score_2020, '.1~f') + ' to ' + format(datum.score_2024, '.1~f')",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "fontWeight": 600,
+        "fontSize": 12,
+        "color": "#C2410C"
+      },
+      "encoding": {
+        "longitude": {"datum": 110},
+        "latitude": {"datum": -33},
+        "text": {
+          "field": "label",
+          "type": "nominal",
+          "condition": {"test": "width < 600", "value": ""}
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/chartready/itu_gci_overall.csv",
+        "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+      },
+      "transform": [
+        {"filter": "indexof(['IDN', 'PNG', 'VUT'], datum.iso3) >= 0"},
+        {
+          "calculate": "datum.country + ' ' + format(datum.score_2020, '.1~f') + ' to ' + format(datum.score_2024, '.1~f')",
+          "as": "line"
+        },
+        {"aggregate": [{"op": "values", "field": "line", "as": "rows"}]},
+        {"calculate": "pluck(datum.rows, 'line')", "as": "lines"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "dy": 18,
+        "fontSize": 12,
+        "lineHeight": 17,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "longitude": {"datum": 110},
+        "latitude": {"datum": -33},
+        "text": {
+          "field": "lines",
+          "type": "nominal",
+          "condition": {"test": "width < 600", "value": ""}
+        }
+      }
+    },
+    {
+      "name": "pacific_dots_no_score",
+      "data": {"name": "pacific_dots"},
+      "transform": [
+        {
+          "lookup": "iso3",
+          "from": {
+            "data": {"url": "data/chartready/itu_gci_overall.csv"},
+            "key": "iso3",
+            "fields": ["country", "score_2020", "score_2024"]
+          }
+        },
+        {
+          "calculate": "isValid(toNumber(datum.score_2020)) && isValid(toNumber(datum.score_2024)) ? round((toNumber(datum.score_2024) - toNumber(datum.score_2020)) * 100) / 100 : null",
+          "as": "change"
+        },
+        {"filter": "!isValid(datum.change)"},
+        {
+          "calculate": "isValid(toNumber(datum.score_2024)) ? 'No 2020 score for ' + datum.country + ' (ITU collected no data that year)' : 'No score for ' + datum.country",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 40,
+        "strokeWidth": 1,
+        "fill": "#F7F5F2",
+        "stroke": "#B9B4AD",
+        "strokeDash": [2, 2],
+        "opacity": 1
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "tooltip": {"field": "note", "type": "nominal"}
+      }
+    }
+  ],
+  "datasets": {
+    "pacific_dots": [
+      {"iso3": "VUT", "lon": 166.85, "lat": -15.23},
+      {"iso3": "FJI", "lon": 177.97, "lat": -17.82},
+      {"iso3": "SLB", "lon": 160.17, "lat": -9.62},
+      {"iso3": "WSM", "lon": -172.44, "lat": -13.63},
+      {"iso3": "TON", "lon": -175.22, "lat": -21.17},
+      {"iso3": "KIR", "lon": 173, "lat": 1.35},
+      {"iso3": "TUV", "lon": 179.2, "lat": -8.52},
+      {"iso3": "NRU", "lon": 166.93, "lat": -0.52},
+      {"iso3": "MHL", "lon": 171.19, "lat": 7.11},
+      {"iso3": "FSM", "lon": 158.23, "lat": 6.89}
+    ]
+  }
+}

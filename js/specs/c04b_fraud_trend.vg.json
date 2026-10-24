@@ -1,0 +1,147 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Line chart of the share of Australians aged 15 and over who experienced each type of personal fraud, in the five yearly ABS surveys from 2020-2021 to 2024-2025. Card fraud climbed from 6.9 to 10.4 percent, and drove the total from 10.6 to 13.1 percent. Scams went up and down between 2.5 and 3.6 percent.",
+  "usermeta": {
+    "chart": "C4b",
+    "idiom": "Line chart, one series highlighted",
+    "section": 2,
+    "source": "ABS Personal Fraud 2024-25, Table 4a, Australia rows, victimisation rate"
+  },
+  "width": "container",
+  "height": 420,
+  "padding": {"left": 5, "top": 5, "bottom": 5, "right": 12},
+  "data": {
+    "url": "data/chartready/abs_fraud_type_by_year.csv",
+    "format": {"parse": {"year_end": "number", "rate_pct": "number"}}
+  },
+  "transform": [
+    {"filter": "datum.year_end >= 2021"},
+    {
+      "calculate": "datum.fraud_type === 'Card fraud' ? 'card' : datum.fraud_type === 'Total personal fraud' ? 'total' : 'other'",
+      "as": "group"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year_end",
+      "type": "quantitative",
+      "title": "Year to June",
+      "scale": {"domain": [2020.7, 2025.3]},
+      "axis": {
+        "values": [2021, 2022, 2023, 2024, 2025],
+        "format": "d",
+        "grid": false,
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8
+      }
+    },
+    "y": {
+      "field": "rate_pct",
+      "type": "quantitative",
+      "title": "People defrauded (%)",
+      "scale": {"domain": [0, 14]},
+      "axis": {
+        "values": [0, 4, 8, 12],
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 6
+      }
+    },
+    "color": {
+      "field": "group",
+      "type": "nominal",
+      "scale": {
+        "domain": ["card", "total", "other"],
+        "range": ["#C2410C", "#14161A", "#7A756D"]
+      },
+      "legend": null
+    },
+    "detail": {"field": "fraud_type", "type": "nominal"}
+  },
+  "layer": [
+    {
+      "mark": {"type": "line"},
+      "encoding": {
+        "strokeWidth": {
+          "condition": {"test": "datum.group === 'card'", "value": 3},
+          "value": 1.5
+        }
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 36, "opacity": 1},
+      "encoding": {
+        "tooltip": [
+          {"field": "fraud_type", "type": "nominal", "title": "Fraud type"},
+          {"field": "year", "type": "nominal", "title": "Financial year"},
+          {
+            "field": "rate_pct",
+            "type": "quantitative",
+            "title": "People defrauded (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.year_end === 2025 && datum.group === 'card'"},
+        {
+          "calculate": "(datum.fraud_type === 'Total personal fraud' ? 'Total' : datum.fraud_type) + ' ' + format(datum.rate_pct, '.1f')",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "fontSize": 11,
+        "fontWeight": 600
+      },
+      "encoding": {"text": {"field": "label", "type": "nominal"}}
+    },
+    {
+      "transform": [
+        {"filter": "datum.year_end === 2025 && datum.group !== 'card'"},
+        {
+          "calculate": "(datum.fraud_type === 'Total personal fraud' ? 'Total' : datum.fraud_type) + ' ' + format(datum.rate_pct, '.1f')",
+          "as": "label"
+        }
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 8, "fontSize": 11},
+      "encoding": {"text": {"field": "label", "type": "nominal"}}
+    },
+    {
+      "name": "callout",
+      "transform": [
+        {"filter": "datum.group === 'card'"},
+        {
+          "calculate": "datum.year_end === 2025 ? datum.rate_pct : null",
+          "as": "r25"
+        },
+        {"joinaggregate": [{"op": "max", "field": "r25", "as": "last"}]},
+        {"filter": "datum.year_end === 2021"},
+        {
+          "calculate": "'Up by half, from|' + format(datum.rate_pct, '.1f') + ' to ' + format(datum.last, '.1f') + ' percent'",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15
+      },
+      "encoding": {
+        "x": {"datum": 2021.15},
+        "y": {"datum": 6.3},
+        "text": {"field": "note", "type": "nominal"},
+        "color": {"value": "#C2410C"}
+      }
+    }
+  ]
+}

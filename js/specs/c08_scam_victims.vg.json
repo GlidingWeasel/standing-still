@@ -1,0 +1,240 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Line chart of victims of seven scam types in the ABS surveys for the years ending June 2021 to 2025. Buying or selling scams rose from 167,400 to 306,400 victims, most of it in 2023-2024. Phishing fell from 203,900 to 106,900, most sharply in 2024-2025. The other five types stayed under 85,000 each.",
+  "usermeta": {
+    "chart": "C8",
+    "idiom": "Line chart, two series highlighted",
+    "section": 3,
+    "source": "ABS Personal Fraud 2024-25, Table 8a, selected scams"
+  },
+  "width": "container",
+  "height": 422,
+  "padding": {"left": 5, "top": 5, "bottom": 5, "right": 10},
+  "data": {
+    "url": "data/chartready/abs_scam_types_by_year.csv",
+    "format": {
+      "parse": {
+        "victims_000": "number",
+        "rate_pct": "number",
+        "year_end": "number"
+      }
+    }
+  },
+  "transform": [
+    {"calculate": "round(datum.victims_000 * 1000)", "as": "victims"},
+    {
+      "calculate": "datum.scam_type === 'Buying or selling' ? 'buy' : datum.scam_type === 'Information request or phishing' ? 'phish' : 'other'",
+      "as": "group"
+    },
+    {
+      "calculate": "datum.flag === '*' ? 'High, use with caution' : 'Acceptable'",
+      "as": "reliability"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year_end",
+      "type": "quantitative",
+      "title": "Year to June",
+      "scale": {"domain": [2020.75, 2025.25]},
+      "axis": {
+        "values": [2021, 2022, 2023, 2024, 2025],
+        "format": "d",
+        "grid": false,
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8
+      }
+    }
+  },
+  "layer": [
+    {
+      "encoding": {
+        "y": {
+          "field": "victims",
+          "type": "quantitative",
+          "scale": {"domain": [0, 320000]},
+          "axis": {
+            "values": [0, 100000, 200000, 300000],
+            "format": ",.0f",
+            "title": "Victims",
+            "titleAngle": 0,
+            "titleAlign": "left",
+            "titleBaseline": "bottom",
+            "titleX": -58,
+            "titleY": -10,
+            "minExtent": 58,
+            "maxExtent": 58,
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 6
+          }
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": ["buy", "phish", "other"],
+            "range": ["#A6301F", "#1F6F5C", "#B9B4AD"]
+          },
+          "legend": null
+        },
+        "detail": {"field": "scam_type", "type": "nominal"}
+      },
+      "layer": [
+        {
+          "transform": [{"filter": "datum.group === 'other'"}],
+          "mark": {"type": "line", "strokeWidth": 1.25}
+        },
+        {
+          "transform": [{"filter": "datum.group !== 'other'"}],
+          "mark": {"type": "line", "strokeWidth": 3}
+        },
+        {
+          "mark": {"type": "circle", "opacity": 1},
+          "encoding": {
+            "size": {
+              "condition": {"test": "datum.group === 'other'", "value": 16},
+              "value": 48
+            },
+            "tooltip": [
+              {"field": "scam_type", "type": "nominal", "title": "Scam type"},
+              {"field": "year", "type": "nominal", "title": "Financial year"},
+              {
+                "field": "victims",
+                "type": "quantitative",
+                "title": "Victims",
+                "format": ","
+              },
+              {
+                "field": "reliability",
+                "type": "nominal",
+                "title": "Sampling error"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {"filter": "datum.year_end === 2021 && datum.group === 'phish'"}
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "bottom",
+            "dx": 4,
+            "dy": -6,
+            "fontSize": 11,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "text": {"field": "victims", "format": ",", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [
+            {"filter": "datum.year_end === 2021 && datum.group === 'buy'"}
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "top",
+            "dx": 4,
+            "dy": 7,
+            "fontSize": 11,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "text": {"field": "victims", "format": ",", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [
+            {"filter": "datum.year_end === 2025 && datum.group !== 'other'"},
+            {
+              "calculate": "[datum.group === 'buy' ? 'Buying or selling' : 'Phishing', format(datum.victims, ',')]",
+              "as": "end_label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 9,
+            "fontSize": 11,
+            "fontWeight": 600,
+            "lineHeight": 14
+          },
+          "encoding": {"text": {"field": "end_label", "type": "nominal"}}
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year_end === 2025 && datum.scam_type === 'Upfront payment'"
+            },
+            {"calculate": "['Five other', 'scam types']", "as": "end_label"}
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "top",
+            "dx": 9,
+            "dy": -4,
+            "fontSize": 11,
+            "lineHeight": 14
+          },
+          "encoding": {
+            "text": {"field": "end_label", "type": "nominal"},
+            "color": {"value": "#7A756D"}
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "year_end": 2023.55,
+            "victims": 236000,
+            "note": ["Up 109,000", "in 2023-2024"],
+            "group": "buy"
+          },
+          {
+            "year_end": 2024.5,
+            "victims": 190000,
+            "note": ["Down 41,900", "in 2024-2025"],
+            "group": "phish"
+          }
+        ]
+      },
+      "encoding": {
+        "y": {"field": "victims", "type": "quantitative"},
+        "text": {"field": "note", "type": "nominal"}
+      },
+      "layer": [
+        {
+          "transform": [{"filter": "datum.group === 'buy'"}],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "fontSize": 11,
+            "lineHeight": 14,
+            "color": "#A6301F"
+          }
+        },
+        {
+          "transform": [{"filter": "datum.group === 'phish'"}],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 11,
+            "lineHeight": 14,
+            "color": "#1F6F5C"
+          }
+        }
+      ]
+    }
+  ]
+}

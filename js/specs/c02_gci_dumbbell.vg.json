@@ -1,0 +1,191 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Connected dot plot of the 36 countries whose GCI score crossed Australia's between 2020 and 2024, plus Australia. Thirty-two passed Australia and four fell behind it.",
+  "usermeta": {
+    "chart": "C2",
+    "idiom": "Connected dot plot (dumbbell)",
+    "section": 1,
+    "source": "ITU Global Cybersecurity Index via World Bank Data360, ITU_GCI_GCI_OVRL_SCRE"
+  },
+  "width": "container",
+  "height": 560,
+  "data": {
+    "url": "data/chartready/itu_gci_overall.csv",
+    "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+  },
+  "transform": [
+    {
+      "calculate": "datum.iso3 === 'AUS' ? datum.score_2020 : null",
+      "as": "aus_2020_row"
+    },
+    {
+      "calculate": "datum.iso3 === 'AUS' ? datum.score_2024 : null",
+      "as": "aus_2024_row"
+    },
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "aus_2020_row", "as": "aus_2020"},
+        {"op": "max", "field": "aus_2024_row", "as": "aus_2024"}
+      ]
+    },
+    {
+      "filter": "datum.iso3 === 'AUS' || (datum.score_2020 < datum.aus_2020 && datum.score_2024 > datum.aus_2024) || (datum.score_2020 > datum.aus_2020 && datum.score_2024 < datum.aus_2024)"
+    },
+    {"calculate": "datum.score_2024 - datum.score_2020", "as": "change"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "sort": {"field": "score_2024", "op": "max", "order": "descending"},
+      "title": null,
+      "axis": {
+        "labelLimit": 150,
+        "domain": false,
+        "ticks": false,
+        "labelColor": {
+          "condition": {
+            "test": "datum.value === 'Australia'",
+            "value": "#C2410C"
+          },
+          "value": "#14161A"
+        },
+        "labelFontWeight": {
+          "condition": {
+            "test": "indexof(['Australia', 'Pakistan', 'Jordan', 'Slovenia'], datum.value) >= 0",
+            "value": 600
+          },
+          "value": 400
+        }
+      }
+    },
+    "tooltip": [
+      {"field": "country", "type": "nominal", "title": "Country"},
+      {
+        "field": "score_2020",
+        "type": "quantitative",
+        "title": "Score 2020",
+        "format": ".1f"
+      },
+      {
+        "field": "score_2024",
+        "type": "quantitative",
+        "title": "Score 2024",
+        "format": ".1f"
+      },
+      {
+        "field": "change",
+        "type": "quantitative",
+        "title": "Change (points)",
+        "format": "+.1f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {"type": "rect", "fill": "#F7F5F2", "fillOpacity": 0},
+      "encoding": {
+        "x": {
+          "datum": 60,
+          "type": "quantitative",
+          "scale": {"domain": [60, 100]}
+        },
+        "x2": {"datum": 100}
+      }
+    },
+    {
+      "mark": {"type": "rule", "strokeWidth": 2},
+      "encoding": {
+        "x": {
+          "field": "score_2020",
+          "type": "quantitative",
+          "scale": {"domain": [60, 100]},
+          "title": "GCI score out of 100"
+        },
+        "x2": {"field": "score_2024"},
+        "color": {
+          "condition": {"test": "datum.change >= 0", "value": "#1F6F5C"},
+          "value": "#A6301F"
+        },
+        "opacity": {"value": 0.55}
+      }
+    },
+    {
+      "transform": [
+        {"fold": ["score_2020", "score_2024"], "as": ["year_key", "score"]},
+        {
+          "calculate": "datum.year_key === 'score_2020' ? '2020' : datum.change >= 0 ? '2024, rose' : '2024, fell'",
+          "as": "series"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 60,
+        "opacity": 1,
+        "stroke": "#F7F5F2",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "score",
+          "type": "quantitative",
+          "scale": {"domain": [60, 100]}
+        },
+        "color": {
+          "field": "series",
+          "type": "nominal",
+          "scale": {
+            "domain": ["2020", "2024, rose", "2024, fell"],
+            "range": ["#B9B4AD", "#1F6F5C", "#A6301F"]
+          },
+          "legend": {
+            "title": "GCI score",
+            "orient": "top",
+            "direction": "horizontal",
+            "symbolType": "circle"
+          }
+        },
+        "order": {"field": "year_key", "sort": "ascending", "type": "ordinal"}
+      }
+    },
+    {
+      "name": "count_note",
+      "transform": [
+        {
+          "calculate": "datum.iso3 !== 'AUS' && datum.score_2024 > datum.aus_2024 ? 1 : 0",
+          "as": "passed"
+        },
+        {
+          "calculate": "datum.iso3 !== 'AUS' && datum.score_2024 < datum.aus_2024 ? 1 : 0",
+          "as": "behind"
+        },
+        {
+          "aggregate": [
+            {"op": "sum", "field": "passed", "as": "n_passed"},
+            {"op": "sum", "field": "behind", "as": "n_behind"}
+          ]
+        },
+        {
+          "calculate": "'Above Australia, the ' + datum.n_passed + ' that passed it.|Below, the ' + datum.n_behind + ' that fell behind.'",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"datum": 66.5, "type": "quantitative"},
+        "y": {"datum": "Estonia", "bandPosition": 0.15},
+        "text": {"field": "note", "type": "nominal"},
+        "tooltip": null
+      }
+    }
+  ]
+}

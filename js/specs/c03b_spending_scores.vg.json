@@ -1,0 +1,183 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Two panels on one timeline. Top, Australian Signals Directorate spending from 2018-2019 to 2024-2025, which more than doubled between the two years the ITU measured. Bottom, Australia's ITU scores for the four measures that fell, as a share of full marks, from the 2020 edition to the 2024 edition.",
+  "usermeta": {
+    "chart": "C3b",
+    "idiom": "Bar chart above a slope chart, sharing one time axis",
+    "section": 1,
+    "source": "ASD annual reports (audited total expenses), and ITU Global Cybersecurity Index sub-indicators via World Bank Data360"
+  },
+  "spacing": 18,
+  "vconcat": [
+    {
+      "title": {
+        "text": "Australian Signals Directorate spending, $ billion",
+        "subtitle": "Dark bars are the two years the ITU measured",
+        "fontSize": 12,
+        "subtitleFontSize": 11,
+        "subtitleColor": "#5C5F66"
+      },
+      "width": 400,
+      "height": 190,
+      "data": {
+        "url": "data/chartready/asd_spending.csv",
+        "format": {"parse": {"year_end": "number", "expenses_bn": "number"}}
+      },
+      "transform": [
+        {"calculate": "datum.itu_edition !== ''", "as": "itu_year"},
+        {
+          "calculate": "'$' + format(datum.expenses_bn, '.2f') + 'b'",
+          "as": "label"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "year_end",
+          "type": "ordinal",
+          "title": null,
+          "axis": null
+        },
+        "y": {
+          "field": "expenses_bn",
+          "type": "quantitative",
+          "title": null,
+          "scale": {"domain": [0, 2.5]},
+          "axis": {
+            "tickCount": 5,
+            "format": ".1f",
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 6
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {"type": "bar", "width": {"band": 0.7}},
+          "encoding": {
+            "color": {
+              "condition": {"test": "datum.itu_year", "value": "#1A5F70"},
+              "value": "#9CCFCB"
+            },
+            "tooltip": [
+              {"field": "year", "type": "nominal", "title": "Financial year"},
+              {
+                "field": "expenses_bn",
+                "type": "quantitative",
+                "title": "Spending ($ billion)",
+                "format": ".2f"
+              },
+              {
+                "field": "itu_edition",
+                "type": "nominal",
+                "title": "ITU index measured"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [{"filter": "datum.itu_year"}],
+          "mark": {
+            "type": "text",
+            "baseline": "bottom",
+            "dy": -4,
+            "fontWeight": 600
+          },
+          "encoding": {"text": {"field": "label", "type": "nominal"}}
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Australia's ITU score, share of full marks",
+        "fontSize": 12
+      },
+      "width": 400,
+      "height": 190,
+      "data": {
+        "url": "data/chartready/itu_gci_subindicators.csv",
+        "format": {"parse": {"score_2020": "number", "score_2024": "number"}}
+      },
+      "transform": [
+        {
+          "filter": "datum.iso3 === 'AUS' && indexof(['TECH_SECT_CCC', 'COOP_PPPS', 'CDS_PUB_CYB_AWE', 'CDS_CYB_PROF_TRAIN'], datum.code) >= 0"
+        },
+        {
+          "calculate": "{'TECH_SECT_CCC': 'Sector response teams', 'COOP_PPPS': 'Industry partnerships', 'CDS_PUB_CYB_AWE': 'Awareness campaigns', 'CDS_CYB_PROF_TRAIN': 'Professional training'}[datum.code]",
+          "as": "measure"
+        },
+        {"fold": ["score_2020", "score_2024"], "as": ["edition", "score"]},
+        {
+          "calculate": "datum.edition === 'score_2020' ? 2020 : 2024",
+          "as": "year_end"
+        },
+        {"calculate": "datum.score * 100", "as": "pct"},
+        {
+          "calculate": "datum.measure + ' ' + format(datum.pct, '.0f') + '%'",
+          "as": "label"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "year_end",
+          "type": "ordinal",
+          "title": "Year to June",
+          "axis": {
+            "labelAngle": 0,
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 8
+          }
+        },
+        "y": {
+          "field": "pct",
+          "type": "quantitative",
+          "title": null,
+          "scale": {"domain": [50, 100]},
+          "axis": {
+            "values": [50, 75, 100],
+            "labelExpr": "datum.value + '%'",
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 6
+          }
+        },
+        "detail": {"field": "measure", "type": "nominal"}
+      },
+      "layer": [
+        {"mark": {"type": "line", "color": "#A6301F", "strokeWidth": 2}},
+        {
+          "mark": {
+            "type": "circle",
+            "color": "#A6301F",
+            "size": 45,
+            "opacity": 1
+          },
+          "encoding": {
+            "tooltip": [
+              {"field": "measure", "type": "nominal", "title": "Measure"},
+              {"field": "year_end", "type": "ordinal", "title": "ITU edition"},
+              {
+                "field": "pct",
+                "type": "quantitative",
+                "title": "Share of full marks (%)",
+                "format": ".0f"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [{"filter": "datum.year_end === 2024"}],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 8,
+            "color": "#14161A"
+          },
+          "encoding": {"text": {"field": "label", "type": "nominal"}}
+        }
+      ]
+    }
+  ],
+  "resolve": {"scale": {"x": "shared"}}
+}

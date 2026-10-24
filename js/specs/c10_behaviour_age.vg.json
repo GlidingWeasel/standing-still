@@ -1,0 +1,189 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Heatmap of 20 protective online behaviours by age group, Australia 2025. Australians aged 65 and over lead on the anti-scam basics, and lead clearly on 7 of the 20 behaviours, by 5 points or more.",
+  "usermeta": {
+    "chart": "C10",
+    "idiom": "Heatmap",
+    "section": 4,
+    "source": "AIC Cybercrime in Australia 2025, sheet Online behaviours and knowledge, All persons"
+  },
+  "width": "container",
+  "height": 540,
+  "data": {
+    "url": "data/chartready/aic_behaviour_by_age.csv",
+    "format": {"parse": {"year": "number", "pct": "number"}}
+  },
+  "transform": [
+    {"filter": "datum.year === 2025 && datum.age_band !== 'All ages'"},
+    {
+      "calculate": "datum.age_band === '65+' ? datum.pct : null",
+      "as": "pct_65"
+    },
+    {
+      "joinaggregate": [{"op": "max", "field": "pct_65", "as": "sort_65"}],
+      "groupby": ["short_label"]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "age_band",
+      "type": "ordinal",
+      "title": "Age (years)",
+      "axis": {
+        "labelAngle": 0,
+        "orient": "top",
+        "domain": false,
+        "ticks": false
+      }
+    },
+    "y": {
+      "field": "short_label",
+      "type": "nominal",
+      "sort": {"field": "sort_65", "op": "max", "order": "descending"},
+      "title": null,
+      "axis": {"labelLimit": 260, "domain": false, "ticks": false}
+    },
+    "opacity": {
+      "condition": {"param": "ageHover", "value": 1, "empty": true},
+      "value": 0.25
+    },
+    "tooltip": [
+      {"field": "behaviour", "type": "nominal", "title": "Behaviour"},
+      {"field": "age_band", "type": "ordinal", "title": "Age"},
+      {
+        "field": "pct",
+        "type": "quantitative",
+        "title": "Keep the habit (%)",
+        "format": ".1f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "ageHover",
+          "select": {
+            "type": "point",
+            "fields": ["age_band"],
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "mark": {"type": "rect", "stroke": "#F7F5F2", "strokeWidth": 2},
+      "encoding": {
+        "color": {
+          "field": "pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 100], "scheme": "teals"},
+          "legend": {
+            "title": "Adults who keep the habit, 2025 (%)",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 220,
+            "titleLimit": 320
+          }
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 11},
+      "encoding": {
+        "text": {"field": "pct", "type": "quantitative", "format": ".1f"},
+        "color": {
+          "condition": {"test": "datum.pct >= 50", "value": "#F7F5F2"},
+          "value": "#14161A"
+        }
+      }
+    },
+    {
+      "name": "callout_text",
+      "transform": [
+        {
+          "calculate": "datum.age_band === '18-34' ? datum.pct : null",
+          "as": "p18"
+        },
+        {
+          "joinaggregate": [{"op": "max", "field": "p18", "as": "young"}],
+          "groupby": ["short_label"]
+        },
+        {
+          "filter": "datum.short_label === 'Avoided unknown links' && datum.age_band === '65+'"
+        },
+        {
+          "calculate": "round(datum.pct - datum.young) + ' points|ahead of|18 to 34s'",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 24,
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": "width"},
+        "text": {"field": "note", "type": "nominal"},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "callout_arrow",
+      "transform": [
+        {
+          "calculate": "datum.age_band === '18-34' ? datum.pct : null",
+          "as": "p18"
+        },
+        {
+          "joinaggregate": [{"op": "max", "field": "p18", "as": "young"}],
+          "groupby": ["short_label"]
+        },
+        {
+          "filter": "datum.short_label === 'Avoided unknown links' && datum.age_band === '65+'"
+        }
+      ],
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {"value": {"expr": "width + 20"}},
+        "x2": {"value": {"expr": "width + 7"}},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    },
+    {
+      "name": "callout_head",
+      "transform": [
+        {
+          "calculate": "datum.age_band === '18-34' ? datum.pct : null",
+          "as": "p18"
+        },
+        {
+          "joinaggregate": [{"op": "max", "field": "p18", "as": "young"}],
+          "groupby": ["short_label"]
+        },
+        {
+          "filter": "datum.short_label === 'Avoided unknown links' && datum.age_band === '65+'"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-left",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"value": {"expr": "width + 5"}},
+        "opacity": {"value": 1},
+        "tooltip": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+period_idx,period,sector,sector_full,stage,share,over30,total,source
+1,July to December 2023,Australian Government,Australian Government,Identify,53.0,,,OAIC dashboard
+1,July to December 2023,Insurance,Insurance,Identify,49.0,,,OAIC dashboard
+1,July to December 2023,Finance,Finance (incl. superannuation),Identify,27.0,,,OAIC dashboard
+1,July to December 2023,Retail,Retail,Identify,27.0,,,OAIC dashboard
+1,July to December 2023,Health services,Health service providers,Identify,12.0,,,OAIC dashboard
+1,July to December 2023,Australian Government,Australian Government,Notify,55.0,,,OAIC dashboard
+1,July to December 2023,Insurance,Insurance,Notify,49.0,,,OAIC dashboard
+1,July to December 2023,Finance,Finance (incl. superannuation),Notify,44.0,,,OAIC dashboard
+1,July to December 2023,Retail,Retail,Notify,19.0,,,OAIC dashboard
+1,July to December 2023,Health services,Health service providers,Notify,15.0,,,OAIC dashboard
+2,January to June 2024,Australian Government,Australian Government,Identify,87.0,,,OAIC dashboard
+2,January to June 2024,Retail,Retail,Identify,25.0,,,OAIC dashboard
+2,January to June 2024,Health services,Health service providers,Identify,18.0,,,OAIC dashboard
+2,January to June 2024,Education,Education,Identify,18.0,,,OAIC dashboard
+2,January to June 2024,Finance,Finance (incl. superannuation),Identify,16.0,,,OAIC dashboard
+2,January to June 2024,Australian Government,Australian Government,Notify,78.0,,,OAIC dashboard
+2,January to June 2024,Finance,Finance (incl. superannuation),Notify,32.0,,,OAIC dashboard
+2,January to June 2024,Health services,Health service providers,Notify,16.0,,,OAIC dashboard
+2,January to June 2024,Education,Education,Notify,9.0,,,OAIC dashboard
+2,January to June 2024,Retail,Retail,Notify,7.0,,,OAIC dashboard
+3,July to December 2024,Australian Government,Australian Government,Identify,74.0,,,OAIC dashboard
+3,July to December 2024,Retail,Retail,Identify,32.0,,,OAIC dashboard
+3,July to December 2024,Health services,Health service providers,Identify,21.0,,,OAIC dashboard
+3,July to December 2024,Legal and accounting,"Legal, accounting & management services",Identify,16.0,,,OAIC dashboard
+3,July to December 2024,Finance,Finance (incl. superannuation),Identify,11.0,,,OAIC dashboard
+3,July to December 2024,Australian Government,Australian Government,Notify,66.0,,,OAIC dashboard
+3,July to December 2024,Finance,Finance (incl. superannuation),Notify,26.0,,,OAIC dashboard
+3,July to December 2024,Health services,Health service providers,Notify,19.0,,,OAIC dashboard
+3,July to December 2024,Legal and accounting,"Legal, accounting & management services",Notify,16.0,,,OAIC dashboard
+3,July to December 2024,Retail,Retail,Notify,15.0,,,OAIC dashboard
+4,January to June 2025,Australian Government,Australian Government,Identify,58.0,,,OAIC dashboard
+4,January to June 2025,Legal and accounting,"Legal, accounting & management services",Identify,27.0,,,OAIC dashboard
+4,January to June 2025,Finance,Finance (incl. superannuation),Identify,26.0,,,OAIC dashboard
+4,January to June 2025,Health services,Health service providers,Identify,20.0,,,OAIC dashboard
+4,January to June 2025,Education,Education,Identify,13.0,,,OAIC dashboard
+4,January to June 2025,Australian Government,Australian Government,Notify,45.0,,,OAIC dashboard
+4,January to June 2025,Finance,Finance (incl. superannuation),Notify,25.0,,,OAIC dashboard
+4,January to June 2025,Legal and accounting,"Legal, accounting & management services",Notify,22.0,,,OAIC dashboard
+4,January to June 2025,Education,Education,Notify,21.0,,,OAIC dashboard
+4,January to June 2025,Health services,Health service providers,Notify,13.0,,,OAIC dashboard
+5,July to December 2025,Australian Government,Australian Government,Identify,70.0,35,50,OAIC data file
+5,July to December 2025,Business associations,Business/Professional Associations,Identify,31.8,21,66,OAIC data file
+5,July to December 2025,Personal services,"Personal services (incl employment, child care, vets)",Identify,26.8,11,41,OAIC data file
+5,July to December 2025,Finance,Finance (incl. superannuation),Identify,26.6,21,79,OAIC data file
+5,July to December 2025,Health services,Health service providers,Identify,15.4,18,117,OAIC data file
+5,July to December 2025,Australian Government,Australian Government,Notify,86.0,43,50,OAIC data file
+5,July to December 2025,Business associations,Business/Professional Associations,Notify,54.4,37,68,OAIC data file
+5,July to December 2025,Finance,Finance (incl. superannuation),Notify,53.8,43,80,OAIC data file
+5,July to December 2025,Personal services,"Personal services (incl employment, child care, vets)",Notify,34.9,15,43,OAIC data file
+5,July to December 2025,Health services,Health service providers,Notify,33.1,41,124,OAIC data file

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Waffle chart of 100 figures standing for 100 Australians aged 15 and over. Thirteen experienced personal fraud in 2024-2025, ten of them card fraud. Each group's count is written beside the grid. Ten were card fraud victims, three were hit only by scams or identity theft, and 87 had none of these.",
+  "usermeta": {
+    "chart": "C4",
+    "idiom": "Waffle (isotype unit chart)",
+    "section": 2,
+    "source": "ABS Personal Fraud 2024-25, Table 4a, Australia rows"
+  },
+  "width": 540,
+  "height": 440,
+  "data": {
+    "url": "data/chartready/abs_fraud_national.csv",
+    "format": {"parse": {"persons_000": "number", "rate_pct": "number"}}
+  },
+  "transform": [
+    {"pivot": "fraud_type", "value": "rate_pct"},
+    {"calculate": "round(datum['Total personal fraud'])", "as": "total_n"},
+    {"calculate": "round(datum['Card fraud'])", "as": "card_n"}
+  ],
+  "layer": [
+    {
+      "name": "figures",
+      "transform": [
+        {"calculate": "sequence(1, 101)", "as": "idx"},
+        {"flatten": ["idx"]},
+        {"calculate": "9 - (datum.idx - 1) % 10", "as": "col"},
+        {"calculate": "floor((datum.idx - 1) / 10)", "as": "row"},
+        {
+          "calculate": "datum.idx <= datum.card_n ? 'Card fraud' : datum.idx <= datum.total_n ? 'Other fraud' : 'None of these'",
+          "as": "group"
+        },
+        {
+          "calculate": "datum.group === 'Card fraud' ? 'Card fraud victim' : datum.group === 'Other fraud' ? 'Hit only by scams or identity theft' : 'None of these'",
+          "as": "figure_note"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "M -0.3,-0.68 a 0.3,0.3 0 1 0 0.6,0 a 0.3,0.3 0 1 0 -0.6,0 Z M -0.5,-0.28 L 0.5,-0.28 L 0.42,1 L -0.42,1 Z",
+        "filled": true,
+        "size": 1144,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "col",
+          "type": "quantitative",
+          "scale": {"domain": [-0.5, 9.5], "range": [0, 350]},
+          "axis": null
+        },
+        "y": {
+          "field": "row",
+          "type": "quantitative",
+          "scale": {"domain": [-0.5, 9.5]},
+          "axis": null
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Card fraud", "Other fraud", "None of these"],
+            "range": ["#C2410C", "#14161A", "#DDD8D1"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "figure_note", "type": "nominal", "title": "This figure"}
+        ]
+      }
+    },
+    {
+      "name": "counts",
+      "transform": [
+        {"calculate": "[0, 1, 2]", "as": "k"},
+        {"flatten": ["k"]},
+        {
+          "calculate": "datum.k === 0 ? datum.card_n : datum.k === 1 ? datum.total_n - datum.card_n : 100 - datum.total_n",
+          "as": "n"
+        },
+        {
+          "calculate": "datum.k === 0 ? 'card fraud victims' : datum.k === 1 ? ['hit only by scams', 'or identity theft'] : 'none of these'",
+          "as": "words"
+        },
+        {
+          "calculate": "datum.k === 0 ? 0 : datum.k === 1 ? 1 : 5.5",
+          "as": "row_n"
+        },
+        {"calculate": "datum.k === 1 ? 1.17 : datum.row_n", "as": "row_words"}
+      ],
+      "encoding": {
+        "color": {
+          "condition": [
+            {"test": "datum.k === 0", "value": "#C2410C"},
+            {"test": "datum.k === 1", "value": "#14161A"}
+          ],
+          "value": "#7A756D"
+        }
+      },
+      "layer": [
+        {
+          "name": "count_numbers",
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "middle",
+            "fontSize": 20,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "x": {"value": 392},
+            "y": {
+              "field": "row_n",
+              "type": "quantitative",
+              "scale": {"domain": [-0.5, 9.5]},
+              "axis": null
+            },
+            "text": {"field": "n", "type": "quantitative"}
+          }
+        },
+        {
+          "name": "count_words",
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "lineHeight": 15
+          },
+          "encoding": {
+            "x": {"value": 400},
+            "y": {
+              "field": "row_words",
+              "type": "quantitative",
+              "scale": {"domain": [-0.5, 9.5]},
+              "axis": null
+            },
+            "text": {"field": "words", "type": "nominal"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "key",
+      "data": {
+        "values": [
+          {"t": "Each figure is one in 100 people aged 15 and over, 2024-2025"}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "alphabetic",
+        "fontSize": 11,
+        "color": "#5C5F66"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": -12},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    }
+  ]
+}

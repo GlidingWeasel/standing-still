@@ -1,0 +1,257 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Diverging bar chart of the change in each pillar of Australia's GCI score from 2020 to 2024, every bar drawn from a shared zero line, falls to the left and rises to the right. Technical fell 1.13 points and Organisational rose 1.02, for a net fall of 1.22.",
+  "usermeta": {
+    "chart": "C3",
+    "idiom": "Diverging bar chart (bars from a shared zero line)",
+    "section": 1,
+    "source": "ITU Global Cybersecurity Index pillar scores via World Bank Data360 (LEGL, TECH, ORG, CDS, COOP), Australia"
+  },
+  "width": "container",
+  "height": 390,
+  "data": {
+    "url": "data/chartready/itu_gci_pillars_au.csv",
+    "format": {
+      "parse": {"order": "number", "change": "number", "is_total": "number"}
+    }
+  },
+  "transform": [
+    {
+      "calculate": "datum.is_total === 1 ? 'Net' : datum.change < -0.005 ? 'Fell' : datum.change > 0.005 ? 'Rose' : 'No change'",
+      "as": "kind"
+    },
+    {
+      "calculate": "abs(datum.change) < 0.005 ? '0.00' : format(datum.change, '+.2f')",
+      "as": "label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "height": {"band": 0.6}},
+      "encoding": {
+        "y": {
+          "field": "pillar",
+          "type": "ordinal",
+          "sort": {"field": "order", "op": "min"},
+          "title": null,
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 8,
+            "labelFontWeight": {
+              "condition": {
+                "test": "datum.value === 'Net change'",
+                "value": 600
+              },
+              "value": 400
+            },
+            "labelExpr": "datum.value === 'Capacity development' ? ['Capacity', 'development'] : datum.value"
+          }
+        },
+        "x": {
+          "field": "change",
+          "type": "quantitative",
+          "scale": {"domain": [-1.7, 1.5]},
+          "title": "Change in Australia's score, 2020 to 2024 (points)",
+          "axis": {
+            "values": [-1.5, -1, -0.5, 0, 0.5, 1, 1.5],
+            "labelExpr": "datum.value > 0 ? '+' + format(datum.value, '.1f') : format(datum.value, '.1f')",
+            "grid": true,
+            "domain": false
+          }
+        },
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Fell", "Rose", "No change", "Net"],
+            "range": ["#A6301F", "#1F6F5C", "#B9B4AD", "#C2410C"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "pillar", "type": "nominal", "title": "Pillar"},
+          {
+            "field": "score_2020",
+            "type": "quantitative",
+            "title": "Score 2020",
+            "format": ".2f"
+          },
+          {
+            "field": "score_2024",
+            "type": "quantitative",
+            "title": "Score 2024",
+            "format": ".2f"
+          },
+          {
+            "field": "change",
+            "type": "quantitative",
+            "title": "Change (points)",
+            "format": "+.2f"
+          }
+        ]
+      }
+    },
+    {
+      "name": "labels_fell",
+      "transform": [{"filter": "datum.change < -0.005"}],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -6,
+        "fontSize": 12,
+        "fontWeight": 600
+      },
+      "encoding": {
+        "y": {
+          "field": "pillar",
+          "type": "ordinal",
+          "sort": {"field": "order", "op": "min"}
+        },
+        "x": {"field": "change", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"},
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Fell", "Rose", "No change", "Net"],
+            "range": ["#A6301F", "#1F6F5C", "#7A756D", "#C2410C"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "name": "labels_rose",
+      "transform": [{"filter": "datum.change >= -0.005"}],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "fontSize": 12,
+        "fontWeight": 600
+      },
+      "encoding": {
+        "y": {
+          "field": "pillar",
+          "type": "ordinal",
+          "sort": {"field": "order", "op": "min"}
+        },
+        "x": {"field": "change", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"},
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Fell", "Rose", "No change", "Net"],
+            "range": ["#A6301F", "#1F6F5C", "#7A756D", "#C2410C"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "name": "headings",
+      "data": {
+        "values": [
+          {"x": -0.8, "t": "Fell", "c": "#A6301F"},
+          {"x": 0.8, "t": "Rose", "c": "#1F6F5C"}
+        ]
+      },
+      "mark": {"type": "text", "fontSize": 13, "fontWeight": 600},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"value": -14},
+        "text": {"field": "t", "type": "nominal"},
+        "color": {"field": "c", "type": "nominal", "scale": null}
+      }
+    },
+    {
+      "name": "callout_text",
+      "data": {
+        "values": [
+          {
+            "t": "Only one technical|measure fell, sector|response teams, from full|marks to just over half"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"datum": -1.58, "type": "quantitative"},
+        "y": {"datum": "Legal", "type": "ordinal", "bandPosition": 0.03},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_arrow",
+      "data": {"values": [{}]},
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {"datum": -0.95, "type": "quantitative"},
+        "y": {"datum": "Legal", "type": "ordinal", "bandPosition": 0.97},
+        "y2": {"datum": "Technical", "bandPosition": 0.14}
+      }
+    },
+    {
+      "name": "callout_head",
+      "data": {"values": [{}]},
+      "mark": {
+        "type": "point",
+        "shape": "triangle-down",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {"datum": -0.95, "type": "quantitative"},
+        "y": {"datum": "Technical", "type": "ordinal", "bandPosition": 0.15}
+      }
+    },
+    {
+      "name": "key",
+      "data": {
+        "values": [
+          {
+            "k": "Every bar starts at zero. The orange bar is the net change,|the five pillars added together."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dy": 40,
+        "fontSize": 11,
+        "lineBreak": "|",
+        "lineHeight": 14,
+        "color": "#5C5F66"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": "height"},
+        "text": {"field": "k", "type": "nominal"}
+      }
+    },
+    {
+      "name": "zero_line",
+      "data": {"values": [{}]},
+      "mark": {"type": "rule", "color": "#14161A", "strokeWidth": 1.5},
+      "encoding": {
+        "x": {"datum": 0, "type": "quantitative"},
+        "y": {"value": 0},
+        "y2": {"value": "height"}
+      }
+    }
+  ],
+  "resolve": {"scale": {"color": "independent"}}
+}

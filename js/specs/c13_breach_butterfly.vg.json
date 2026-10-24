@@ -1,0 +1,285 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Butterfly chart of the share of each sector's data breaches that took more than 30 days to identify (left) and to notify the privacy regulator (right), for the five sectors with the most breaches, with a slider that steps through the five half-years from July 2023 to December 2025. Australian Government agencies were the slowest of the five at both stages in every half-year, from 53 to 87 percent at identifying.",
+  "usermeta": {
+    "chart": "C13",
+    "idiom": "Butterfly chart (back-to-back bars on a shared zero line) with a half-year slider",
+    "section": 5,
+    "source": "OAIC Notifiable Data Breach statistics dashboard, time to identify and time to notify by top industry sector, July 2023 to June 2025 (read on 13 October 2026, data/raw/oaic_dashboard/), and OAIC Notifiable Data Breaches data, July to December 2025, sheets Time to identify by sector and Time to notify by sector"
+  },
+  "width": "container",
+  "height": 330,
+  "params": [
+    {
+      "name": "half",
+      "value": 5,
+      "bind": {
+        "input": "range",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "name": "Half-year "
+      }
+    }
+  ],
+  "data": {
+    "url": "data/chartready/oaic_breach_periods.csv",
+    "format": {
+      "parse": {
+        "period_idx": "number",
+        "share": "number",
+        "over30": "number",
+        "total": "number"
+      }
+    }
+  },
+  "transform": [
+    {"filter": "datum.period_idx == half"},
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "share", "as": "sector_longest"}
+      ],
+      "groupby": ["sector"]
+    },
+    {
+      "calculate": "datum.sector === 'Australian Government' ? -1000 : -datum.sector_longest",
+      "as": "sort_key"
+    },
+    {
+      "calculate": "datum.stage === 'Identify' ? -datum.share : datum.share",
+      "as": "signed_share"
+    },
+    {
+      "calculate": "datum.stage === 'Identify' ? 'Identify the breach' : 'Notify the regulator'",
+      "as": "stage_label"
+    },
+    {
+      "calculate": "isValid(datum.over30) ? datum.over30 + ' of ' + datum.total : 'Not published, share only'",
+      "as": "count_text"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "sector",
+      "type": "nominal",
+      "sort": {"field": "sort_key", "op": "min"},
+      "title": null,
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 10,
+        "labelFontWeight": {
+          "condition": {
+            "test": "datum.value === 'Australian Government'",
+            "value": 600
+          },
+          "value": 400
+        }
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "height": {"band": 0.6}},
+      "encoding": {
+        "x": {
+          "field": "signed_share",
+          "type": "quantitative",
+          "title": "Share of the sector's breaches (%)",
+          "scale": {"domain": [-100, 100]},
+          "axis": {
+            "values": [-100, -75, -50, -25, 0, 25, 50, 75, 100],
+            "labelExpr": "abs(datum.value)",
+            "grid": true,
+            "domain": false
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.sector === 'Australian Government'",
+            "value": "#C2410C"
+          },
+          "value": "#B9B4AD"
+        },
+        "tooltip": [
+          {"field": "sector_full", "type": "nominal", "title": "Sector"},
+          {"field": "period", "type": "nominal", "title": "Half-year"},
+          {"field": "stage_label", "type": "nominal", "title": "Time to"},
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share taking more than 30 days (%)",
+            "format": ".0f"
+          },
+          {
+            "field": "count_text",
+            "type": "nominal",
+            "title": "Breaches taking more than 30 days"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.stage === 'Identify'"}],
+      "mark": {"type": "text", "align": "right", "dx": -6, "fontWeight": 600},
+      "encoding": {
+        "x": {"field": "signed_share", "type": "quantitative"},
+        "text": {"field": "share", "type": "quantitative", "format": ".0f"},
+        "color": {
+          "condition": {
+            "test": "datum.sector === 'Australian Government'",
+            "value": "#C2410C"
+          },
+          "value": "#5C5F66"
+        }
+      }
+    },
+    {
+      "transform": [{"filter": "datum.stage === 'Notify'"}],
+      "mark": {"type": "text", "align": "left", "dx": 6, "fontWeight": 600},
+      "encoding": {
+        "x": {"field": "signed_share", "type": "quantitative"},
+        "text": {"field": "share", "type": "quantitative", "format": ".0f"},
+        "color": {
+          "condition": {
+            "test": "datum.sector === 'Australian Government'",
+            "value": "#C2410C"
+          },
+          "value": "#5C5F66"
+        }
+      }
+    },
+    {
+      "name": "period_label",
+      "transform": [
+        {
+          "filter": "datum.sector === 'Australian Government' && datum.stage === 'Identify'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": 600,
+        "color": "#C2410C"
+      },
+      "encoding": {
+        "x": {"datum": 0},
+        "y": {"value": -60},
+        "text": {"field": "period", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": -50,
+            "t": "Finding the breach",
+            "s": "Share found more than 30 days after it happened"
+          },
+          {
+            "x": 50,
+            "t": "Reporting it to the regulator",
+            "s": "Share reported more than 30 days after it was found"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": 600,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"value": -34},
+        "text": {"field": "t", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": -50,
+            "t": "Finding the breach",
+            "s": "Share found more than 30 days after it happened"
+          },
+          {
+            "x": 50,
+            "t": "Reporting it to the regulator",
+            "s": "Share reported more than 30 days after it was found"
+          }
+        ]
+      },
+      "mark": {"type": "text", "fontSize": 11, "color": "#5C5F66"},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"value": -17},
+        "text": {"field": "s", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_identify",
+      "transform": [
+        {
+          "filter": "datum.sector === 'Australian Government' && datum.stage === 'Identify'"
+        },
+        {
+          "calculate": "'Agencies took more than 30|days to find ' + (isValid(datum.over30) ? datum.over30 + ' of the ' + datum.total + '|breaches with a known date,|more than the other four sectors.' : format(datum.share, '.0f') + ' percent|of their breaches, more|than the other four sectors.')",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "lineBreak": "|",
+        "lineHeight": 16,
+        "color": "#C2410C",
+        "fontWeight": 600
+      },
+      "encoding": {
+        "x": {"datum": -98},
+        "y": {"value": 218},
+        "text": {"field": "note", "type": "nominal"}
+      }
+    },
+    {
+      "name": "callout_notify",
+      "transform": [
+        {
+          "filter": "datum.sector === 'Australian Government' && datum.stage === 'Notify'"
+        },
+        {
+          "calculate": "'They took more than 30 days|to report ' + (isValid(datum.over30) ? datum.over30 + ' of the ' + datum.total + ' with|a known date to the regulator.' : format(datum.share, '.0f') + ' percent|to the regulator.')",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "fontSize": 12,
+        "lineBreak": "|",
+        "lineHeight": 16,
+        "color": "#C2410C",
+        "fontWeight": 600
+      },
+      "encoding": {
+        "x": {"datum": 98},
+        "y": {"value": 218},
+        "text": {"field": "note", "type": "nominal"}
+      }
+    },
+    {
+      "name": "centre_line",
+      "data": {"values": [{}]},
+      "mark": {"type": "rule", "color": "#14161A", "strokeWidth": 1.5},
+      "encoding": {
+        "x": {"datum": 0},
+        "y": {"value": 0},
+        "y2": {"value": "height"}
+      }
+    }
+  ]
+}

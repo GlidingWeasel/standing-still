@@ -1,0 +1,195 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Connected dot plot of eight cyber security measures, and whether a business had any, by business size, 2024-2025. On every measure businesses with 0 to 4 staff trail those with 200 or more, for example 12.8 percent train their staff in cyber security awareness against 72.5 percent.",
+  "usermeta": {
+    "chart": "C12",
+    "idiom": "Connected dot plot (range dot plot)",
+    "section": 5,
+    "source": "ABS Characteristics of Australian Business 2024-25, data cube BCSDC05, Table 3, Employment size"
+  },
+  "width": "container",
+  "height": 390,
+  "data": {
+    "url": "data/chartready/abs_business_measures.csv",
+    "format": {"parse": {"pct": "number"}}
+  },
+  "transform": [
+    {
+      "calculate": "{'Virus protection': 'Antivirus software', 'Monitoring tools': 'Security monitoring tools', 'Patching': 'Software updates', 'Backups': 'Data backups', 'Access control': 'Secure log-in checks', 'Admin rights': 'Limits on admin access', 'Formal policy': 'Written security policy', 'Staff training': 'Staff awareness training', 'Any measure': 'Any measure at all'}[datum.measure]",
+      "as": "label"
+    },
+    {
+      "calculate": "{'Virus protection': 'Regularly updated virus checking or protection software', 'Monitoring tools': 'Tools designed for security monitoring, such as intrusion detection systems', 'Patching': 'Regular patching or updating of operating systems, software and applications', 'Backups': 'Regular backup of data critical to operations', 'Access control': 'Identity and access management through authentication software or hardware', 'Admin rights': 'Restriction of administrative privileges', 'Formal policy': 'A formal policy to manage cyber security risks and threats', 'Staff training': 'Cyber security awareness and training for staff', 'Any measure': 'Any cyber security measures'}[datum.measure]",
+      "as": "abs_wording"
+    },
+    {
+      "calculate": "datum.size === '0-4 staff' ? datum.pct : null",
+      "as": "small_v"
+    },
+    {
+      "calculate": "datum.size === '200+ staff' ? datum.pct : null",
+      "as": "big_v"
+    },
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "small_v", "as": "small"},
+        {"op": "max", "field": "big_v", "as": "big"},
+        {"op": "min", "field": "pct", "as": "lo"},
+        {"op": "max", "field": "pct", "as": "hi"}
+      ],
+      "groupby": ["measure"]
+    },
+    {"calculate": "datum.big - datum.small", "as": "gap"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "label",
+      "type": "nominal",
+      "title": null,
+      "sort": {"field": "gap", "order": "descending"},
+      "axis": {"domain": false, "ticks": false, "labelPadding": 8}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#B9B4AD", "strokeWidth": 2},
+      "encoding": {
+        "x": {"field": "lo", "type": "quantitative"},
+        "x2": {"field": "hi"}
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 110, "opacity": 1},
+      "encoding": {
+        "x": {
+          "field": "pct",
+          "type": "quantitative",
+          "title": "Businesses using it, 2024-2025 (%)",
+          "scale": {"domain": [0, 100]},
+          "axis": {"grid": true, "tickCount": 5}
+        },
+        "color": {
+          "field": "size",
+          "type": "nominal",
+          "title": "Business size",
+          "sort": ["0-4 staff", "5-19 staff", "20-199 staff", "200+ staff"],
+          "scale": {
+            "domain": ["0-4 staff", "5-19 staff", "20-199 staff", "200+ staff"],
+            "range": ["#C2410C", "#B9B4AD", "#7A756D", "#14161A"]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "symbolType": "circle"
+          }
+        },
+        "tooltip": [
+          {"field": "abs_wording", "type": "nominal", "title": "Measure"},
+          {"field": "size", "type": "nominal", "title": "Business size"},
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "Using it (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.size === '0-4 staff'"}],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -9,
+        "fontWeight": 600,
+        "color": "#C2410C"
+      },
+      "encoding": {
+        "x": {"field": "pct", "type": "quantitative"},
+        "text": {"field": "pct", "type": "quantitative", "format": ".0f"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.size === '200+ staff' && datum.pct === datum.hi"}
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 9, "color": "#14161A"},
+      "encoding": {
+        "x": {"field": "pct", "type": "quantitative"},
+        "text": {"field": "pct", "type": "quantitative", "format": ".0f"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.size === '200+ staff' && datum.pct < datum.hi"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -9,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"field": "pct", "type": "quantitative"},
+        "text": {"field": "pct", "type": "quantitative", "format": ".0f"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Only 1 in 8 of the smallest|businesses trains staff in|cyber security awareness"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#14161A"
+      },
+      "encoding": {
+        "x": {"datum": 1},
+        "y": {"datum": "Antivirus software", "bandPosition": 0.05},
+        "text": {"field": "note", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "strokeWidth": 1.5, "color": "#14161A"},
+      "encoding": {
+        "x": {"field": "pct", "type": "quantitative"},
+        "y": {"datum": "Antivirus software", "bandPosition": 0},
+        "y2": {"datum": "Staff awareness training", "bandPosition": 0.78}
+      },
+      "transform": [
+        {
+          "filter": "datum.measure === 'Staff training' && datum.size === '0-4 staff'"
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "point",
+        "shape": "triangle-up",
+        "filled": true,
+        "size": 45,
+        "color": "#14161A",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {"field": "pct", "type": "quantitative"},
+        "y": {"datum": "Staff awareness training", "bandPosition": 0.76}
+      },
+      "transform": [
+        {
+          "filter": "datum.measure === 'Staff training' && datum.size === '0-4 staff'"
+        }
+      ]
+    }
+  ]
+}

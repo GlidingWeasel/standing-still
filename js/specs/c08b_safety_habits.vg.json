@@ -1,0 +1,186 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Lollipop chart of the 20 online safety habits the AIC asked Australian adults about in 2025, most common first. Avoiding unknown links is the most common, kept by 64.8 percent of adults. The three habits that guard against suspicious messages are in teal. None of the 20 is about checking a seller before paying.",
+  "usermeta": {
+    "chart": "C8b",
+    "idiom": "Lollipop chart",
+    "section": 3,
+    "source": "AIC Cybercrime in Australia 2025, Online behaviours and knowledge, all adults, 2025"
+  },
+  "width": "container",
+  "height": 444,
+  "data": {
+    "url": "data/chartready/aic_behaviour_by_age.csv",
+    "format": {"parse": {"pct": "number", "year": "number"}}
+  },
+  "transform": [
+    {"filter": "datum.age_band === 'All ages' && datum.year === 2025"},
+    {
+      "calculate": "indexof(['Avoided unknown links', 'Checked a message with the sender', 'Spam filter'], datum.short_label) >= 0 ? 'Guards against suspicious messages' : 'Other online safety habits'",
+      "as": "group"
+    },
+    {
+      "calculate": "{'Checked a message with the sender': 'Checked message with sender', 'Different password for banking': 'Different banking password', 'Parental controls (parents only)': 'Parental controls*', 'Tightened social media privacy': 'Tightened social privacy', 'Checked social media privacy': 'Checked social privacy', 'Changed passwords regularly': 'Changed passwords often'}[datum.short_label] || datum.short_label",
+      "as": "label"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "label",
+      "type": "nominal",
+      "sort": {"field": "pct", "op": "min", "order": "descending"},
+      "axis": {
+        "title": null,
+        "domain": false,
+        "ticks": false,
+        "labelPadding": 8,
+        "labelColor": {
+          "condition": {
+            "test": "indexof(['Avoided unknown links', 'Checked message with sender', 'Spam filter'], datum.value) >= 0",
+            "value": "#1A5F70"
+          },
+          "value": "#14161A"
+        }
+      }
+    },
+    "x": {
+      "field": "pct",
+      "type": "quantitative",
+      "scale": {"domain": [0, 100]},
+      "axis": {
+        "title": "Adults who keep the habit, 2025 (%)",
+        "values": [0, 25, 50, 75, 100]
+      }
+    }
+  },
+  "layer": [
+    {
+      "name": "stems",
+      "mark": {"type": "rule", "strokeWidth": 2},
+      "encoding": {
+        "x2": {"datum": 0},
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Guards against suspicious messages",
+              "Other online safety habits"
+            ],
+            "range": ["#1A5F70", "#B9B4AD"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "name": "dots",
+      "mark": {"type": "circle", "size": 70, "opacity": 1},
+      "encoding": {
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Guards against suspicious messages",
+              "Other online safety habits"
+            ],
+            "range": ["#1A5F70", "#B9B4AD"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "behaviour", "type": "nominal", "title": "Habit"},
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "Adults doing it in 2025 (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "name": "values",
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "fontSize": 11
+      },
+      "encoding": {
+        "text": {"field": "pct", "type": "quantitative", "format": ".1f"},
+        "color": {
+          "condition": {
+            "test": "datum.group === 'Guards against suspicious messages'",
+            "value": "#1A5F70"
+          },
+          "value": "#5C5F66"
+        }
+      }
+    },
+    {
+      "name": "key",
+      "transform": [
+        {"filter": "datum.short_label === 'Avoided unknown links'"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "lineBreak": "|",
+        "lineHeight": 14,
+        "color": "#1A5F70"
+      },
+      "encoding": {
+        "x": {"datum": 50},
+        "y": {"datum": "Password manager"},
+        "text": {"value": "Teal habits guard|against suspicious|messages"}
+      }
+    },
+    {
+      "name": "key_parents",
+      "transform": [
+        {"filter": "datum.short_label === 'Avoided unknown links'"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "dy": 46,
+        "color": "#5C5F66"
+      },
+      "encoding": {
+        "x": {"datum": 50},
+        "y": {"datum": "Password manager"},
+        "text": {"value": "* parents only"}
+      }
+    },
+    {
+      "name": "callout",
+      "transform": [
+        {"filter": "datum.short_label === 'Avoided unknown links'"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineBreak": "|",
+        "lineHeight": 15,
+        "color": "#C2410C"
+      },
+      "encoding": {
+        "x": {"datum": 36},
+        "y": {"datum": "Parental controls*"},
+        "text": {
+          "value": "None of the 20 is|about checking a|seller before you pay"
+        }
+      }
+    }
+  ]
+}
